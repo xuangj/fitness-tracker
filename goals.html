@@ -38,6 +38,10 @@
         <button class="goal-button" onclick="selectGoal('New Goal')">New Goal</button>
     </div>
 
+    <div class="bar-chart-container">
+        <canvas id="barChart"></canvas>
+    </div>
+
     
     <nav class="navbar">
         <ul>
@@ -79,8 +83,35 @@
 
         function selectGoal(goal) {
             alert("Selected Goal: " + goal);
-        }        
+        }    
 
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById("barChart").getContext("2d");
+
+        var barChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"], // X-axis labels
+                datasets: [{
+                    label: "Activity %",
+                    data: [50, 70, 30, 40, 74, 50],
+                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    });
 
         var ctx = document.getElementById('statsChart').getContext('2d');
         var statsChart = new Chart(ctx, {
