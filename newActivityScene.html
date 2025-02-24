@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Xuang Jin">
+        <meta name="description" content="New Activity scene">
+        <meta name="keywords" content="New Activity">
+
+        <!--Sources:
+        https://www.w3schools.com/howto/howto_css_icon_buttons.asp
+        https://docs.fontawesome.com/web/style/styling
+        https://stackoverflow.com/questions/71239832/bootstrap-5-navbar-collapse-and-dropdown
+        https://getbootstrap.com/docs/5.3/forms/form-control/
+        https://www.w3schools.com/bootstrap/bootstrap_ref_css_forms.asp
+        -->
+
+        <title>New Activity Scene</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"  crossorigin="anonymous"> 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="Styles/main.css">
+
+        
+    </head>
+    
+    <body>
+        <!--Collapsible navbar including profile, activity feed, and add activity button-->
+        <nav class="navbar navbar-dark bg-dark navbar-expand-md" aria-label="Main Navigation Bar">
+            <div class="container-xl">
+                <a class="navbar-brand" href="#" style="font-size:x-large"> LOGO</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="ms-auto d-flex align-items-center">
+                        <button class="btn me-auto" type="button" style="color:  white; font-size:larger"><u>Activity Feed</u></button>
+                        <a class="btn" href="#" id="addButton"><i class="fa-solid fa-circle-plus"></i></a>
+                        <a class="btn" href="#" id="profileButton"><i class="fa-regular fa-circle-user"></i></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <h1 style="padding:10px">New Activity</h1>
+            <div class="row">
+                 <div class="col-md-4 col-12">
+                    <label for="Title">Title</label>
+                    <div class="input-group mb-3">
+                        <input id="Title" type="text" placeholder="New Title" class="form-control-md">
+                    </div>
+                    <!--Form to fill out a new activity-->
+                    <label>Activity Type</label>
+                    <div class="input-group mb-3">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Activity</button>
+                            <!--Choice of activity-->
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Running</a></li>
+                                <li><a class="dropdown-item" href="#">Weight Training</a></li>
+                                <li><a class="dropdown-item" href="#">Swimming</a></li>
+                                <li><a class="dropdown-item" href="#">Biking</a></li>
+                                <li><a class="dropdown-item" href="#">Rock-climbing</a></li>
+                                <li><a class="dropdown-item" href="#">Pickleball</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--Qualitative numerical data: duration, time-->
+                    <label for="durationHours">Duration</label>
+                    <div class="input-group mb-3">
+                        <input id="durationHours" type="text" class="form-control" placeholder="00">
+                        <span class="input-group-text">hr</span>
+                        <input id="durationMinutes" type="text" class="form-control" placeholder="00">
+                        <span class="input-group-text">min</span>
+                        <input id="durationSeconds" type="text" class="form-control" placeholder="00">
+                        <span class="input-group-text">sec</span>
+                    </div>
+                    <label for="date">Date & Time</label>
+                    <div class="input-group mb-3">
+                        <input id="date" type="text" placeholder="01/01/1999"  class="form-control">
+                        <input id="time" type="text" placeholder="00:00" class="form-control">
+                        <div class="dropdown ">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">AM</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">AM</a></li>
+                                <li><a class="dropdown-item" href="#">PM</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+                 
+                <!--Qualitative data: description-->
+                <div class="col-md-4 col-12">
+                    <label for="descriptionTextInput">Description</label>
+                    <div class="input-group mb-3">
+                        <input type="text" id="descriptionTextInput" placeholder="How did your workout feel? Tell us more...">
+                    </div>
+                </div>
+
+                <!--Quantitative data: steps, distance, pace, calories-->
+                <div class="col-md-4 col-12">
+                    <label for="Steps">Steps</label>
+                    <div class="input-group mb-3">
+                        <input id="Steps" type="text" placeholder="0 steps">
+                    </div>
+
+                    <label for="totalDistance">Total Distance</label>
+                    <div class="input-group mb-3">
+                        <input id="totalDistance" type="text" placeholder="0 miles">
+                    </div>
+
+                    <label for="averagePace">Average Pace</label>
+                    <div class="input-group mb-3">
+                        <input id="averagePace" type="text" placeholder="0 mi/hr">
+                    </div>
+
+                    <label for="caloriesBurnt">Calories Burnt</label>
+                    <div class="input-group mb-3">
+                        <input id="caloriesBurnt" type="text" placeholder="0 cals">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="py-5">
+                    <button class="btn btn-primary" type="button" id="CreatActivityButton">Create Activity</button>
+                    <button class="btn btn-link" type="button" style="color:red" id="cancelButton">cancel</button>
+
+                </div>
+            </div>
+           
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-mQ93r8dhb2uhT9LxeB1Mpr9ZmIdfuK4JbJ8bYvcj0Fow0PHeEq2zYkXf0Ehdc6Bf" 
+        crossorigin="anonymous"></script>
+
+    </body>
+</html>

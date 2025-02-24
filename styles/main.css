@@ -1,0 +1,65 @@
+body{
+    background-color:rgb(220, 236, 255)
+}
+
+.card-body{
+    background-color: #ADD8E6;
+    padding-left:20px;
+    padding-right: 20px;
+}
+
+
+
+input.LogInInfo{
+    width: 90%
+}
+
+#inline{
+    display:inline-block;
+}
+
+#LoginButton{
+    width: 70%
+}
+
+#CreateAccountButton{
+    width: 50%
+}
+
+#addButton{
+    color: rgb(68, 139, 255);
+    font-size: 20pt;
+}
+
+#profileButton{
+    color: grey;
+    font-size:40pt;
+
+}
+
+#cancelButton:hover{
+    background-color:#ff746c;
+}
+
+input.workoutInfo{
+    width: 80%
+}
+
+input:focus{
+    border: 2px solid rgb(147, 194, 255);
+    outline: none;
+}
+
+
+
+label{
+    font-weight: bold;
+}
+
+#descriptionTextInput{
+    height: 200px;
+    width: 100%;
+    padding-bottom: 150px
+}
+
+
