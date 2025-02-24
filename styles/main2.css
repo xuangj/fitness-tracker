@@ -76,14 +76,14 @@ button {
     border: none;
     font-size: 16px;
     cursor: pointer;
-    background-color: #ff9800;
+    background-color: rgb(68, 139, 255);
     color: white;
     border-radius: 5px;
     transition: background 0.3s;
 }
 
 button:hover {
-    background-color: #e68900;
+    background-color: rgb(0, 64, 148);
 }
 
 .nav-buttons {
