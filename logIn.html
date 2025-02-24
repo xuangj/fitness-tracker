@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-   
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Xuang Jin">
-        <meta name="description" content="Create Account scene">
-        <meta name="keywords" content="Create Account">
-    
-        <!--Sources:
-        https://stackoverflow.com/questions/40818684/how-can-i-make-my-buttons-apear-inline-next-to-text
-        https://www.w3schools.com/css/css3_shadows.asp
-        https://www.w3schools.com/cssref/css3_pr_justify-content.php
-        -->
+        <meta name="description" content="Log in scene">
+        <meta name="keywords" content="Log in">
 
-        <title>Create Account Scene</title>
+        <meta property="og:title" content="Log In">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://cs4640.cs.virginia.edu/pnq6th/sprint2/log-in.html">
+        <meta property="og:description" content="Log in with credentials">
+        <meta property="og:site_name" content="Log In">
+
+        <title>Log-In Scene</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"  crossorigin="anonymous"> 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="styles/main.css">
+
+        <!--Sources:
+        https://www.w3schools.com/css/css3_shadows.asp
+        https://www.w3schools.com/cssref/css3_pr_justify-content.php
+        -->
     </head>
-    
+
     <body>
-        <!--Navigation bar includes web info link, Log In, and Join button. Collapsible depending on screen size -->
+         <!--Navigation bar includes web info link, Log In, and Join button. Collapsible depending on screen size -->
         <nav class="navbar navbar-dark bg-dark navbar-expand-md" aria-label="Main Navigation Bar">
             <div class="container-xl">
                 <a class="navbar-brand" href="#" style="font-size:x-large"> LOGO</a>
@@ -43,51 +47,35 @@
         <div class="py-5 mb-4">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-4 col-12"  id="CreateAccountContainer">
+                    <div class="col-md-4 col-12"  id="LoginContainer">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h1 class="card-title text-center mb-4" style="padding:10px">Join Us!</h1>
-
-                                 <!--Collects user email, choice of username, and choice of password.-->
-                                <label for="Email">Email</label>
-                                <div class="input-group mb3 ">
-                                    <input id="Email" class="LogInInfo" type="text">
-                                </div>
-
+                                <h1 class="card-title text-center mb-4" style="padding:10px">Welcome Back!</h1>
+                                <!--Allows user to log into existing account using set username and password-->
                                 <label for="Username">Username</label>
                                 <div class="input-group mb-3">
                                     <input id="Username" class="LogInInfo" type="text">
                                 </div>
-
+        
                                 <label for="Password">Password</label>
                                 <div class="input-group mb-3">
                                     <input id="Password" class="LogInInfo" type="text">
                                 </div>
-
-                                <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
-
-                                <!--Allows sign up, unless username/ email already exists in DB-->
-                                <div class="d-flex flex-column align-items-center">
-                                    <button class="btn btn-primary" type="button" id="CreateButton">Sign Up</button>
-                                    <h6 id="inline">
-                                        Already a user?
-                                        <button class="btn me-auto" type="button" style="color:blue"><u>Log In</u></button>
-                                    </h6>
-                                    
-                                </div>
+                                <button class="btn " type="button" id="forgotButton"><u>Forgot password?</u></button>
+                                <div class="d-flex flex-column align-items-center"> 
+                                    <button class="btn btn-primary" type="button" id="LoginButton">Log In</button>
+                                    <p class="mb-0 mt-0" style="color:white">OR</p>
+                                    <!--Allows user to create new account-->
+                                    <button class="btn btn-primary" type="button" id="CreateAccountButton">Create an Account</button>
+                                </div> 
                             </div>
-
-                        </div>
-                    </div>
+                        </div> 
+                    </div> 
                 </div>
-                
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-mQ93r8dhb2uhT9LxeB1Mpr9ZmIdfuK4JbJ8bYvcj0Fow0PHeEq2zYkXf0Ehdc6Bf" 
         crossorigin="anonymous"></script>
-
     </body>
-
-
 </html>
