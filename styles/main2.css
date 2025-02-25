@@ -81,7 +81,7 @@ button {
     border: none;
     font-size: 16px;
     cursor: pointer;
-    background-color: rgb(68, 139, 255);
+    background-color: #2b72e6;
     color: white;
     border-radius: 5px;
     transition: background 0.3s;
