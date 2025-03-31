@@ -1,3 +1,7 @@
+<?php
+    $userName = "John Doe";  //need to update for actual user name
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +14,7 @@
 
     <meta property="og:title" content="Welcome your Fitness Tracker Dashboard">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cs4640.cs.virginia.edu/pnq6th/sprint2/index.html">
+    <meta property="og:url" content="https://cs4640.cs.virginia.edu/pnq6th/sprint2/index.php">
     <meta property="og:description" content="Dashboard of User">
     <meta property="og:site_name" content="Fitness Tracker">
 
@@ -24,17 +28,17 @@
         <aside class="sidebar">
             <div class="profile">
                 <img src="profile.jpg" alt="User Profile Picture">
-                <h2>John Doe</h2>
+                <h2><?php echo $userName; ?></h2> <!-- displays dynamic user name -->
                 <p>Gender: Male</p>
                 <p>Age: 25</p>
                 <p>Weight: 160 lbs</p>
                 <p>Height: 5'10"</p>
-                <button onclick="location.href='edit-profile.html'">Edit Profile</button>
+                <button onclick="location.href='edit-profile.php'">Edit Profile</button> <!-- need to create-->
             </div>
             <nav class="nav-buttons">
-                <button onclick="location.href='goals.html'">Goals</button>
-                <button onclick="location.href='logs.html'">Logs</button>
-                <button onclick="location.href='stats.html'">Statistics</button>
+                <button onclick="location.href='goal.php'">Goals</button>
+                <button onclick="location.href='logs.php'">Logs</button> <!-- need to create-->
+                <button onclick="location.href='stats.php'">Statistics</button> <!-- need to create-->
             </nav>
         </aside>
         <main class="content">
