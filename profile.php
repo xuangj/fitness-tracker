@@ -36,7 +36,7 @@
                 <button onclick="location.href='edit-profile.php'">Edit Profile</button> <!-- need to create-->
             </div>
             <nav class="nav-buttons">
-                <button onclick="location.href='goal.php'">Goals</button>
+                <button onclick="location.href='goals.php'">Goals</button>
                 <button onclick="location.href='logs.php'">Logs</button> <!-- need to create-->
                 <button onclick="location.href='stats.php'">Statistics</button> <!-- need to create-->
             </nav>

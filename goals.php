@@ -1,3 +1,9 @@
+<?php
+    // starts the session to retrieve dynamic data (e.g., username from a login session)
+    session_start();
+    // example: dynamically set the username if it exists
+    $userName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Guest';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +15,7 @@
 
     <meta property="og:title" content="Fitness Tracker Goals">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cs4640.cs.virginia.edu/pnq6th/sprint2/goals.html">
+    <meta property="og:url" content="https://cs4640.cs.virginia.edu/pnq6th/sprint2/goals.php">
     <meta property="og:description" content="Set and Track Fitness Goals">
     <meta property="og:site_name" content="Fitness Tracker">
     <title>Fitness Tracker - Goals</title>
@@ -29,7 +35,6 @@
         <p class="bmi-result" id="bmiResult"></p>
     </div>
 
-
     <div class="fitness-goals">
         <h3 class="goals-header">Fitness Goals</h3>
         <button class="goal-button" onclick="selectGoal('Calorie Deficit')">Calorie Deficit</button>
@@ -45,10 +50,10 @@
     
     <nav class="navbar">
         <ul>
-            <li><a href="goals.html">Goals</a></li>
-            <li><a href="logs.html">Logs</a></li>
-            <li><a href="stats.html">Statistics</a></li>
-            <li><a href="index.html">Profile</a></li>
+            <li><a href="goals.php">Goals</a></li>
+            <li><a href="logs.php">Logs</a></li>
+            <li><a href="stats.php">Statistics</a></li> 
+            <li><a href="profile.php">Profile</a></li>
         </ul>
     </nav>
 
@@ -56,7 +61,6 @@
         <main class="content">
             <h1>Fitness Goals</h1>
             <p>Track your fitness goals progress below.</p>
-
 
             <section class="statistics">
                 <h2>Your Fitness Statistics</h2>
