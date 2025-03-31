@@ -38,7 +38,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto d-flex align-items-center">
                         <button class="btn me-auto" type="button" style="color:  white; font-size:larger"><u>About Us</u></button>
-                        <a class="btn btn-primary" href="logIn.html">Log In</a>
+                        <a class="btn btn-primary" href="logInScene.html">Log In</a>
                         <p class="mb-0 mx-2" style="color:white"> or </p>
                         <a class="btn btn-primary" href="createAccountScene.html">Join for Free!</a>
                     </div>
@@ -75,18 +75,22 @@
                                         <input type="password" class="form-control LogInInfo" input id="Password" name="Password">
                                     </div>
 
-                                    <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
+                                <label for="Password">Password</label>
+                                <div class="input-group mb-3">
+                                    <input id="Password" class="LogInInfo" type="text">
+                                </div>
 
-                                    <!--Allows sign up, unless username/ email already exists in DB-->
-                                    <div class="d-flex flex-column align-items-center">
-                                        <button type="submit" class="btn btn-primary" id="CreateButton">Sign Up</button>
-                                        <h6 id="inline">
-                                            Already a user?
+                                <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
+
+                                <!--Allows sign up, unless username/ email already exists in DB-->
+                                <div class="d-flex flex-column align-items-center">
+                                    <button class="btn btn-primary" type="button" id="CreateButton">Sign Up</button>
+                                    <h6 id="inline">
+                                        Already a user?
                                         <button class="btn me-auto" type="button" style="color:blue"><u>Log In</u></button>
-                                        </h6>
-                                    </div>
-                                </form>
-                                 
+                                    </h6>
+                                    
+                                </div>
                             </div>
 
                         </div>
