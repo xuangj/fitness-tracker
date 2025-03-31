@@ -50,10 +50,10 @@
     
     <nav class="navbar">
         <ul>
-            <li><a href="goals.html">Goals</a></li>
-            <li><a href="logs.html">Logs</a></li>
-            <li><a href="stats.html">Statistics</a></li>
-            <li><a href="index.html">Profile</a></li>
+            <li><a href="goals.php">Goals</a></li>
+            <li><a href="logs.php">Logs</a></li>
+            <li><a href="profile.php">Profile</a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
     </nav>
 

@@ -36,9 +36,10 @@
 
             </div>
             <nav class="nav-buttons">
-                <button onclick="location.href='goals.html'">Goals</button>
-                <button onclick="location.href='logs.html'">Logs</button>
-                <button onclick="location.href='stats.html'">Statistics</button>
+                <button onclick="location.href='goals.php'">Goals</button>
+                <button onclick="location.href='logs.php'">Logs</button>
+                <button onclick="location.href='stats.php'">Statistics</button>
+                <button onclick="location.href='logout.php'">Logout</button>
             </nav>
         </aside>
         <main class="content">
