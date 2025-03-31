@@ -52,7 +52,6 @@
         <ul>
             <li><a href="goals.php">Goals</a></li>
             <li><a href="logs.php">Logs</a></li>
-            <li><a href="stats.php">Statistics</a></li> 
             <li><a href="profile.php">Profile</a></li>
         </ul>
     </nav>

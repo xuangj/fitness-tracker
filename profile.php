@@ -39,7 +39,6 @@
             <nav class="nav-buttons">
                 <button onclick="location.href='goals.php'">Goals</button>
                 <button onclick="location.href='logs.php'">Logs</button> <!-- need to create-->
-                <button onclick="location.href='stats.php'">Statistics</button> <!-- need to create-->
             </nav>
         </aside>
         <main class="content">
