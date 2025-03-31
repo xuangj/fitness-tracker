@@ -98,6 +98,7 @@ class FitnessTrackerController{
         $passwd = trim($_POST["Password"]);
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
             $this->showCreateAccount("Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.");
+        }
 
         if($this->checkUserExist() === true){
             $this->showCreateAccount("This email is linked to an existing account. Would you like to log in?");
@@ -108,11 +109,14 @@ class FitnessTrackerController{
             $this->showCreateAccount("This username is already taken. Try something else!");
             return;
         }
+        $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
 
         $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
-        $query = "insert into users (name, username, email, password) values ($1, $2, $3, $4);";
-        $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd];
+        $query = "insert into users (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
+        $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
         $createUser = pg_query_params($this->db, $query, $params);
+
+        
 
         $_SESSION["name"] = $_POST["Name"];
         $_SESSION["username"] = $_POST["Username"];
@@ -121,7 +125,7 @@ class FitnessTrackerController{
         $_SESSION["age"] = $_POST["Age"];
         $_SESSION["height"] = $heightInInches;
         $_SESSION["weight"] = $_POST["Weight"];
-        echo "hit";
+        echo "BANG";
 
         // Redirect to dashboard or activity page (you can define where to go)
         //header("Location: ?command=profile or activity page");

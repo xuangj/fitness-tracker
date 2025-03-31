@@ -24,7 +24,7 @@
             name text,
             username text,
             email text,
-            password text,
+            passwd text,
             gender text,
             age int,
             height int,
