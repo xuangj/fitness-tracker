@@ -29,6 +29,10 @@ class FitnessTrackerController{
                 $this->login();
                 $this->showLogin();
                 break;
+
+            case "editProfile":
+                $this->showEditProfile();
+                break;
             //case "dashboard":
             case "welcome":
             default:
@@ -126,4 +130,9 @@ class FitnessTrackerController{
         header("Location: ?command=createAccount");
         exit;
     }
+
+    public function showEditProfile($message = ""){
+        include(__DIR__ . '/edit-profile.php');
+    }
+    
 }

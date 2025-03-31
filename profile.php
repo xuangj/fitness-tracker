@@ -33,7 +33,8 @@
                 <p>Age: 25</p>
                 <p>Weight: 160 lbs</p>
                 <p>Height: 5'10"</p>
-                <button onclick="location.href='edit-profile.php'">Edit Profile</button> <!-- need to create-->
+                <button onclick="location.href='?command=editProfile'">Edit Profile</button>
+
             </div>
             <nav class="nav-buttons">
                 <button onclick="location.href='goals.php'">Goals</button>

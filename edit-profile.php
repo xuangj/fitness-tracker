@@ -1,90 +1,83 @@
 <?php
 session_start();
 
-// checks if the user is logged in; if not then it will redirect to login page.
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+if (!isset($_SESSION["username"])) {
+    header("Location: ?command=login");
     exit;
 }
 
-// database connection settings
-$db_host = "db";
-$db_port = "5432";
-$db_name = "example";
-$db_user = "localuser";
-$db_pass = "cs4640LocalUser!";
+$host     = "db";
+$port     = "5432";
+$dbname   = "example";
+$user     = "localuser";
+$password = "cs4640LocalUser!";
 
-// database connection using PDO for PostgreSQL
-$dsn = "pgsql:host=$db_host;port=$db_port;dbname=$db_name";
-try {
-    $pdo = new PDO($dsn, $db_user, $db_pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+$dbconn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
+if (!$dbconn) {
+    die("Error connecting to the database.");
 }
 
 $errors = array();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name   = trim($_POST['name']);
-    $email  = trim($_POST['email']);
-    $gender = trim($_POST['gender']);
-    $age    = intval($_POST['age']);
-    $weight = floatval($_POST['weight']);
-    $height = trim($_POST['height']);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name   = trim($_POST["name"]);
+    $email  = trim($_POST["email"]);
+    $gender = trim($_POST["gender"]);
+    $age    = trim($_POST["age"]);
+    $weight = trim($_POST["weight"]);
+    $height = trim($_POST["height"]);
 
-    if (empty($name) || !preg_match("/^[a-zA-Z ]+$/", $name)) {
-        $errors[] = "Please enter a valid name (letters and spaces only).";
+    if (empty($name)) {
+        $errors[] = "Name cannot be empty.";
     }
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Please enter a valid email address.";
+        $errors[] = "Enter a valid email address.";
     }
+    // validates gender: allowed options are "Male", "Female", or "Other"
     $allowedGenders = array("Male", "Female", "Other");
     if (empty($gender) || !in_array($gender, $allowedGenders)) {
         $errors[] = "Please select a valid gender.";
     }
-    if ($age < 1 || $age > 120) {
+    // validates age: must be numeric and greater than 0
+    if (!is_numeric($age) || intval($age) <= 0) {
         $errors[] = "Please enter a valid age.";
     }
-    if ($weight <= 0) {
+    // validates weight: must be numeric and positive
+    if (!is_numeric($weight) || floatval($weight) <= 0) {
         $errors[] = "Please enter a valid weight.";
     }
     if (empty($height)) {
-        $errors[] = "Please enter a valid height.";
+        $errors[] = "Height cannot be empty.";
     }
 
     if (empty($errors)) {
-        $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, gender = :gender, age = :age, weight = :weight, height = :height WHERE id = :id");
-        $stmt->execute([
-            ':name'   => $name,
-            ':email'  => $email,
-            ':gender' => $gender,
-            ':age'    => $age,
-            ':weight' => $weight,
-            ':height' => $height,
-            ':id'     => $_SESSION['user_id']
-        ]);
-        $_SESSION['message'] = "Profile updated successfully.";
-        header("Location: profile.php");
-        exit;
+        $query  = "UPDATE users SET name = $1, email = $2, gender = $3, age = $4, weight = $5, height = $6 WHERE username = $7";
+        $params = [$name, $email, $gender, intval($age), floatval($weight), $height, $_SESSION["username"]];
+        $result = pg_query_params($dbconn, $query, $params);
+
+        if ($result) {
+            $_SESSION["name"]  = $name;
+            $_SESSION["email"] = $email;
+            header("Location: ?command=profile");
+            exit;
+        } else {
+            $errors[] = "Failed to update profile. Please try again.";
+        }
     }
 } else {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
-    $stmt->execute([':id' => $_SESSION['user_id']]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $query  = "SELECT name, email, gender, age, weight, height FROM users WHERE username = $1";
+    $result = pg_query_params($dbconn, $query, [$_SESSION["username"]]);
+    $userInfo = pg_fetch_assoc($result);
 
-    if (!$user) {
-        die("User not found.");
-    }
-
-    $name   = $user['name'];
-    $email  = $user['email'];
-    $gender = $user['gender'];
-    $age    = $user['age'];
-    $weight = $user['weight'];
-    $height = $user['height'];
+    $name   = $userInfo["name"]   ?? "";
+    $email  = $userInfo["email"]  ?? "";
+    $gender = $userInfo["gender"] ?? "";
+    $age    = $userInfo["age"]    ?? "";
+    $weight = $userInfo["weight"] ?? "";
+    $height = $userInfo["height"] ?? "";
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <h1>Edit Profile</h1>
+        
         <?php if (!empty($errors)): ?>
             <div class="error-messages">
                 <?php foreach ($errors as $error): ?>
@@ -103,7 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <form action="edit-profile.php" method="POST">
+        
+        <form action="?command=editProfile" method="POST">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required><br>
 
@@ -112,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <label for="gender">Gender:</label>
             <select name="gender" id="gender" required>
+                <option value="">-- Select Gender --</option>
                 <option value="Male" <?php echo ($gender === "Male") ? "selected" : ""; ?>>Male</option>
                 <option value="Female" <?php echo ($gender === "Female") ? "selected" : ""; ?>>Female</option>
                 <option value="Other" <?php echo ($gender === "Other") ? "selected" : ""; ?>>Other</option>
@@ -128,6 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <input type="submit" value="Update Profile">
         </form>
+        <br>
+        <button onclick="location.href='?command=profile'">Cancel</button>
     </div>
 </body>
 </html>
