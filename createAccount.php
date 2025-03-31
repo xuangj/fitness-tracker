@@ -77,6 +77,32 @@
 
                                     <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
 
+
+                                    <label for="Gender">Gender</label>
+                                    <div class="input-group mb-3">
+                                    <select class="form-select" id="Gender" name="Gender" required>
+                                        <option value="">-- Select Gender --</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    </div>
+
+                                    <label for="Age">Age</label>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="Age" name="Age" placeholder="Your Age" required>
+                                    </div>
+
+                                    <label for="Weight">Weight (lbs)</label>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="Weight" name="Weight" placeholder="Your Weight in lbs" required>
+                                    </div>
+
+                                    <label for="Height">Height (inches)</label>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="Height" name="Height" placeholder="Your Height in inches" required>
+                                    </div>
+
                                     <!--Allows sign up, unless username/ email already exists in DB-->
                                     <div class="d-flex flex-column align-items-center">
                                         <button type="submit" class="btn btn-primary" id="CreateButton">Sign Up</button>
