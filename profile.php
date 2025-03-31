@@ -27,7 +27,6 @@
     <div class="container">
         <aside class="sidebar">
             <div class="profile">
-                <img src="profile.jpg" alt="User Profile Picture">
                 <h2><?php echo $userName; ?></h2> <!-- displays dynamic user name -->
                 <p>Gender: Male</p>
                 <p>Age: 25</p>
@@ -39,6 +38,7 @@
             <nav class="nav-buttons">
                 <button onclick="location.href='goals.php'">Goals</button>
                 <button onclick="location.href='logs.php'">Logs</button> <!-- need to create-->
+                <button onclick="location.href='logout.php'">Logout</button>
             </nav>
         </aside>
         <main class="content">

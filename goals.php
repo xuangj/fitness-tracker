@@ -54,6 +54,9 @@
             <li><a href="logs.php">Logs</a></li>
             <li><a href="profile.php">Profile</a></li>
         </ul>
+        <ul class="nav-right">
+        <li><a href="logout.php" class="logout-button">Logout</a></li>
+    </ul>
     </nav>
 
     <div class="container">
