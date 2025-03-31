@@ -43,7 +43,7 @@
                     <div class="ms-auto d-flex align-items-center">
                         <button class="btn me-auto" type="button" style="color:  white; font-size:larger"><u>Activity Feed</u></button>
                         <a class="btn" href="newActivity.html" id="addButton" aria-label="Add new activity"><i class="fa-solid fa-circle-plus"></i></a>
-                        <a class="btn" href="index.html" id="profileButton" aria-label="User profile"><i class="fa-regular fa-circle-user"></i></a>
+                        <a class="btn" href="profile.php" id="profileButton" aria-label="User profile"><i class="fa-regular fa-circle-user"></i></a>
                     </div>
                 </div>
             </div>

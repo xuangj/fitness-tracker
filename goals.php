@@ -53,7 +53,7 @@
             <li><a href="goals.php">Goals</a></li>
             <li><a href="logs.php">Logs</a></li>
             <li><a href="profile.php">Profile</a></li>
-            <li><a href="newActivity.html">New Activity</a></li>
+            <li><a href="newActivity.php">New Activity</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </nav>
