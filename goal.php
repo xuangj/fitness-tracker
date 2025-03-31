@@ -48,7 +48,7 @@
             <li><a href="goals.html">Goals</a></li>
             <li><a href="logs.html">Logs</a></li>
             <li><a href="stats.html">Statistics</a></li>
-            <li><a href="profile.php">Profile</a></li>
+            <li><a href="index.html">Profile</a></li>
         </ul>
     </nav>
 

@@ -32,7 +32,7 @@
                 <button onclick="location.href='edit-profile.html'">Edit Profile</button>
             </div>
             <nav class="nav-buttons">
-                <button onclick="location.href='goals.php'">Goals</button>
+                <button onclick="location.href='goals.html'">Goals</button>
                 <button onclick="location.href='logs.html'">Logs</button>
                 <button onclick="location.href='stats.html'">Statistics</button>
             </nav>
