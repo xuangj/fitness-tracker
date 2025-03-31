@@ -28,8 +28,14 @@ class FitnessTrackerController{
 
         switch($command){
             case "createAccount":
-                $this->showCreateAccount();
-                $this->createAccount();
+                //$this->showCreateAccount();
+                //$this->createAccount();
+                //break;
+                if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                    $this->createAccount();
+                } else {
+                    $this->showCreateAccount();
+                }
                 break;
             case "login":
                 $this->login();
