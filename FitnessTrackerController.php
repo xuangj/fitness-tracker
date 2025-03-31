@@ -109,9 +109,11 @@ class FitnessTrackerController{
             return;
         }
 
+        $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
+
         $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
-        $query = "insert into users (name, username, email, password) values ($1, $2, $3, $4);";
-        $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd];
+        $query = "insert into users (name, username, email, password, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
+        $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
         $createUser = pg_query_params($this->db, $query, $params);
 
         $_SESSION["name"] = $_POST["Name"];
@@ -127,6 +129,7 @@ class FitnessTrackerController{
         //header("Location: ?command=profile or activity page");
         return;
     }
+}
 
     // Login logic
     public function showLogin($message=""){
