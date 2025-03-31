@@ -38,7 +38,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto d-flex align-items-center">
                         <button class="btn me-auto" type="button" style="color:  white; font-size:larger"><u>About Us</u></button>
-                        <a class="btn btn-primary" href="logIn.html">Log In</a>
+                        <a class="btn btn-primary" href="logInScene.html">Log In</a>
                         <p class="mb-0 mx-2" style="color:white"> or </p>
                         <a class="btn btn-primary" href="createAccountScene.html">Join for Free!</a>
                     </div>
@@ -46,55 +46,95 @@
             </div>
         </nav>
 
-        <div class="py-5 mb-4">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-4 col-12"  id="CreateAccountContainer">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h1 class="card-title text-center mb-4" style="padding:10px">Join Us!</h1>
-                                <?=$message?>
-                                <form action="index.php?command=createAccount" method="POST">
-                                    <!--Collects user email, choice of username, and choice of password.-->
-                                    <label for="Name">Name</label>
-                                    <div class=""input-group mb3>
-                                        <input type="text" class="form-control LogInInfo" id="Name" name="Name">
-                                    </div>
-                                    <label for="Email">Email</label>
-                                    <div class="input-group mb3 ">
-                                        <input type="text" class="form-control LogInInfo" id="Email" aria-describedby="emailHelp" name="Email">
-                                    </div>
+        <form action="index.php?command=createAccount" method="POST">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <!-- Login Information Card -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h2 class="card-title text-center mb-4">Join Us!</h2>
 
-                                    <label for="Username">Username</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control LogInInfo" input id="Username" name="Username">
-                                    </div>
-
-                                    <label for="Password">Password</label>
-                                    <div class="input-group mb-3">
-                                        <input type="password" class="form-control LogInInfo" input id="Password" name="Password">
-                                    </div>
-
-                                    <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
-
-                                    <!--Allows sign up, unless username/ email already exists in DB-->
-                                    <div class="d-flex flex-column align-items-center">
-                                        <button type="submit" class="btn btn-primary" id="CreateButton">Sign Up</button>
-                                        <h6 id="inline">
-                                            Already a user?
-                                        <button class="btn me-auto" type="button" style="color:blue"><u>Log In</u></button>
-                                        </h6>
-                                    </div>
-                                </form>
-                                 
+                            <div class="mb-3">
+                                <label for="Name">Name</label>
+                                <input type="text" class="form-control" id="Name" name="Name">
                             </div>
 
+                            <div class="mb-3">
+                                <label for="Email">Email</label>
+                                <input type="email" class="form-control" id="Email" name="Email">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Username">Username</label>
+                                <input type="text" class="form-control" id="Username" name="Username">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Password">Password</label>
+                                <input type="password" class="form-control" id="Password" name="Password">
+                            </div>
+
+                            <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Physical Information Card -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h2 class="card-title text-center mb-4">Physical Information</h2>
+
+                            <div class="mb-3">
+                                <label for="Gender">Gender</label>
+                                <select class="form-control" name="Gender" id="Gender">
+                                    <option value="preferNotToSay">Prefer Not to Say</option>
+                                    <option value="female">Female</option>
+                                    <option value="male">Male</option>
+                                    <option value="nonbinary">Nonbinary</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="age">Age</label>
+                                <div class="input-group">
+                                    <input id="Age" type="text" class="form-control" name="Age" placeholder="0">
+                                    <span class="input-group-text">Years</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Height">Height</label>
+                                <div class="input-group">
+                                    <input id="Feet" type="text" class="form-control" name="Feet" placeholder="0">
+                                    <span class="input-group-text">feet</span>
+                                    <input id="Inches" type="text" class="form-control" name="Inches" placeholder="00">
+                                    <span class="input-group-text">inches</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Weight">Weight</label>
+                                <div class="input-group">
+                                    <input id="Weight" type="text" class="form-control" name="Weight" placeholder="0">
+                                    <span class="input-group-text">pounds</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-10 text-center">
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
             </div>
         </div>
+    </form>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-mQ93r8dhb2uhT9LxeB1Mpr9ZmIdfuK4JbJ8bYvcj0Fow0PHeEq2zYkXf0Ehdc6Bf" 
         crossorigin="anonymous"></script>

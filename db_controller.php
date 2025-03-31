@@ -15,7 +15,7 @@
     }
 
     $res = pg_query($dbHandle, "drop sequence if exists user_seq");
-    $res = pg_query($dbHandle,"drop table if exists user");
+    $res = pg_query($dbHandle,"drop table if exists users");
 
     $res = pg_query($dbHandle, "create sequence user_seq;");
 
@@ -24,6 +24,10 @@
             name text,
             username text,
             email text,
-            password text);") or die(pg_last_error($dbHandle));
+            password text,
+            gender text,
+            age int,
+            height int,
+            weight int);") or die(pg_last_error($dbHandle));
 
     echo "Done!";
