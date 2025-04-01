@@ -3,16 +3,16 @@
 class FitnessTrackerController{
     private $db;
     public function __construct($input){
-       $host = "localhost";
+        /*$host = "localhost";
         $port = "5432";
         $dbname = "yyf2uf";
         $user = "yyf2uf";
-        $password = "mQXFbLeZsW8Z"; 
-         /*$host = "db";
+        $password = "mQXFbLeZsW8Z";  */
+        $host = "db";
         $port = "5432";
         $dbname = "example";
         $user = "localuser";
-        $password = "cs4640LocalUser!"; */
+        $password = "cs4640LocalUser!";
 
         session_start();
         $this->input = $input;
@@ -28,16 +28,26 @@ class FitnessTrackerController{
 
         switch($command){
             case "createAccount":
-                $this->showCreateAccount();
-                $this->createAccount();
+                //$this->showCreateAccount();
+                //$this->createAccount();
+                //break;
+                if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                    $this->createAccount();
+                } else {
+                    $this->showCreateAccount();
+                }
                 break;
             case "login":
                 $this->login();
                 $this->showLogin();
                 break;
-
+            case "visitProfile":
+                $this->visitProfile();
             case "editProfile":
                 $this->showEditProfile();
+                break;
+            case "apiInfo":
+                $this->sendUserInfoAPI();
                 break;
             //case "dashboard":
             case "welcome":
@@ -59,21 +69,19 @@ class FitnessTrackerController{
     
     // check if user exists by using their email
     private function checkUserExist(){
-        $query = "SELECT * FROM ft_users WHERE email = $1;";
+        $query = "SELECT * FROM users WHERE email = $1;";
         $result = pg_query_params($this->db, $query, [$_POST["Email"]]);
         return pg_num_rows($result) > 0;
     }
 
     // check if username is taken
     private function checkUsernameTaken(){
-        $query = "SELECT * FROM ft_users WHERE username = $1;";
+        $query = "SELECT * FROM users WHERE username = $1;";
         $result = pg_query_params($this->db, $query, [$_POST["Username"]]);
         return pg_num_rows($result) > 0;
     }
 
     public function createAccount($message =""){
-        var_dump($_POST);
-
         // if fields are empty, send message
         if (!isset($_POST["Name"]) || !isset($_POST["Email"]) 
             || !isset($_POST["Password"]) ||  !isset($_POST["Username"])
@@ -127,7 +135,7 @@ class FitnessTrackerController{
         $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
         
         // insert all info to table
-        $query = "INSERT INTO ft_users (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
+        $query = "INSERT INTO users (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
         $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
         $createUser = pg_query_params($this->db, $query, $params);
         pg_last_error($this->db);
@@ -146,7 +154,7 @@ class FitnessTrackerController{
         $_SESSION["weight"] = $_POST["Weight"];
 
         // Redirect to dashboard or activity page (you can define where to go)
-        //header("Location: ?command=profile or activity page");
+        header("Location: ?command=visitProfile");
         return;
     }
 
@@ -157,14 +165,12 @@ class FitnessTrackerController{
     }
 
     private function retrieveUser($email){
-        $query = "SELECT * FROM ft_users WHERE email = $1;";
+        $query = "SELECT * FROM users WHERE email = $1;";
         $result = pg_query_params($this->db, $query, [$email]);
         return pg_fetch_assoc($result);
     }
-
+    
     public function login($message=""){
-        var_dump($_POST);
-
         // if fields are empty, show message
         if (!isset($_POST["Email"]) || !isset($_POST["Password"]) || 
             empty($_POST["Password"]) || empty($_POST["Email"])) {
@@ -177,7 +183,7 @@ class FitnessTrackerController{
 
         // get user row from table by their email
         $user = $this->retrieveUser($email);
-
+        
         // check if user exists in database
         if (empty($user)){
             $this->showWelcome("This email is not connected to an account. Would you like to sign up?");
@@ -193,13 +199,45 @@ class FitnessTrackerController{
         else {
             $this-> showWelcome("<p class='alert alert-danger'>Incorrect password!</p>");
         }
-        header("Location: ?command=createAccount");
+        header("Location: ?command=visitProfile");
         exit;
+    }
+    public function visitProfile($message = ""){
+        $query = "SELECT gender, age, height, weight FROM users WHERE name = $1";
+        $result = pg_query_params($this->db, $query, array($_SESSION["name"]));
+        
+        $user = pg_fetch_assoc($result);
+
+        $name = $_SESSION["name"];
+        $gender = $user["gender"];
+        $age = $user["age"];
+        $weight = $user["weight"];
+        $heightInInches = $user["height"];
+        $inches = $heightInInches % 12;
+        $feet = ($heightInInches - $inches) / 12;
+
+        include(__DIR__ . '/profile.php');
     }
 
     public function showEditProfile($message = ""){
         include(__DIR__ . '/edit-profile.php');
     }
+
+    public function sendUserInfoAPI(){
+        $userInfo = [
+            "Name" => $_SESSION["name"], 
+            "Username" => $_SESSION["username"], 
+            "Email" => $_SESSION["email"], 
+            "Gender" => $_SESSION["gender"], 
+            "Age" => $_SESSION["age"],
+            "Height" => $_SESSION["height"], 
+            "Weight" => $_SESSION["weight"]
+        ];
+        header("Content-Type: application/json");
+        echo json_encode($userInfo, JSON_PRETTY_PRINT);
+            
+
+        }
+    }
     
-}
 ?>

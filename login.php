@@ -36,9 +36,9 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto d-flex align-items-center">
                         <button class="btn me-auto" type="button" style="color:  white; font-size:larger"><u>About Us</u></button>
-                        <a class="btn btn-primary" href="logInScene.html">Log In</a>
+                        <a class="btn btn-primary" href="login.php">Log In</a>
                         <p class="mb-0 mx-2" style="color:white"> or </p>
-                        <a class="btn btn-primary" href="createAccountScene.html">Join for Free!</a>
+                        <a class="btn btn-primary" href="createaccount.php">Join for Free!</a>
                     </div>
                 </div>
             </div>

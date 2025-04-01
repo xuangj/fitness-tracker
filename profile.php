@@ -27,11 +27,11 @@
     <div class="container">
         <aside class="sidebar">
             <div class="profile">
-                <h2><?php echo $userName; ?></h2> <!-- displays dynamic user name -->
-                <p>Gender: Male</p>
-                <p>Age: 25</p>
-                <p>Weight: 160 lbs</p>
-                <p>Height: 5'10"</p>
+                <h2><?=$name?></h2> <!-- displays dynamic user name -->
+                <p>Gender: <?=$gender?></p>
+                <p>Age: <?=$age?></p>
+                <p>Weight: <?=$weight?></p>
+                <p>Height: <?=$feet?> ' <?=$inches?> "</p>
                 <button onclick="location.href='?command=editProfile'">Edit Profile</button>
 
             </div>
