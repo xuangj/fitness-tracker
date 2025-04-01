@@ -88,45 +88,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="styles/main2.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Edit Profile</h1>
-        
-        <?php if (!empty($errors)): ?>
-            <div class="error-messages">
-                <?php foreach ($errors as $error): ?>
-                    <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        
-        <form action="?command=editProfile" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required><br>
+    <div class="edit-container">
+        <div class="edit-box">
+            <h1>Edit Profile</h1>
+            
+            <?php if (!empty($errors)): ?>
+                <div class="error-messages">
+                    <?php foreach ($errors as $error): ?>
+                        <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            
+            <form action="?command=editProfile" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required><br>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required><br>
 
-            <label for="gender">Gender:</label>
-            <select name="gender" id="gender" required>
-                <option value="">-- Select Gender --</option>
-                <option value="Male" <?php echo ($gender === "Male") ? "selected" : ""; ?>>Male</option>
-                <option value="Female" <?php echo ($gender === "Female") ? "selected" : ""; ?>>Female</option>
-                <option value="Other" <?php echo ($gender === "Other") ? "selected" : ""; ?>>Other</option>
-            </select><br>
+                <label for="gender">Gender:</label>
+                <select name="gender" id="gender" required>
+                    <option value="">-- Select Gender --</option>
+                    <option value="Male" <?php echo ($gender === "Male") ? "selected" : ""; ?>>Male</option>
+                    <option value="Female" <?php echo ($gender === "Female") ? "selected" : ""; ?>>Female</option>
+                    <option value="Other" <?php echo ($gender === "Other") ? "selected" : ""; ?>>Other</option>
+                </select><br>
 
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" value="<?php echo htmlspecialchars($age); ?>" required><br>
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" value="<?php echo htmlspecialchars($age); ?>" required><br>
 
-            <label for="weight">Weight (lbs):</label>
-            <input type="number" step="any" id="weight" name="weight" value="<?php echo htmlspecialchars($weight); ?>" required><br>
+                <label for="weight">Weight (lbs):</label>
+                <input type="number" step="any" id="weight" name="weight" value="<?php echo htmlspecialchars($weight); ?>" required><br>
 
-            <label for="height">Height:</label>
-            <input type="text" id="height" name="height" value="<?php echo htmlspecialchars($height); ?>" required><br>
+                <label for="height">Height:</label>
+                <input type="text" id="height" name="height" value="<?php echo htmlspecialchars($height); ?>" required><br>
 
-            <input type="submit" value="Update Profile">
-        </form>
-        <br>
-        <button onclick="location.href='?command=profile'">Cancel</button>
+                <input type="submit" value="Update Profile">
+            </form>
+            <br>
+            <button onclick="location.href='?command=profile'">Cancel</button>
+        </div>
     </div>
 </body>
 </html>
