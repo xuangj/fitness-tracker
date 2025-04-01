@@ -1,3 +1,5 @@
+<!-- Xuang Jin -->
+
 <?php
 
 class FitnessTrackerController{
@@ -43,6 +45,7 @@ class FitnessTrackerController{
                 break;
             case "visitProfile":
                 $this->visitProfile();
+                break;
             case "editProfile":
                 $this->showEditProfile();
                 break;
@@ -114,6 +117,7 @@ class FitnessTrackerController{
         $passwd = trim($_POST["Password"]);
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
             $this->showCreateAccount("Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.");
+            return;
         }
 
         // check if username is unique and if account w/ email already exists
@@ -168,7 +172,7 @@ class FitnessTrackerController{
     private function retrieveUser($email){
         $query = "SELECT * FROM users WHERE email = $1;";
         $result = pg_query_params($this->db, $query, [$email]);
-        return pg_fetch_assoc($result);
+        return pg_fetch_assoc($result) ?: null;
     }
     
     public function login($message=""){
@@ -186,12 +190,10 @@ class FitnessTrackerController{
         $user = $this->retrieveUser($email);
         
         // check if user exists in database
-        /* if (empty($user)){
+        if ($user === null) {
             $this->showWelcome("This email is not connected to an account. Would you like to sign up?");
-        
-        } 
-            */
-
+            return;
+        }
         // check if password is identical to hash
         if(password_verify($password, $user["passwd"])){
             $_SESSION["name"] = $user["name"];
@@ -205,8 +207,8 @@ class FitnessTrackerController{
         exit;
     }
     public function visitProfile($message = ""){
-        $query = "SELECT gender, age, height, weight FROM users WHERE name = $1";
-        $result = pg_query_params($this->db, $query, array($_SESSION["name"]));
+        $query = "SELECT gender, age, height, weight FROM users WHERE email = $1";
+        $result = pg_query_params($this->db, $query, [$_SESSION["email"]]);
         
         $user = pg_fetch_assoc($result);
 
