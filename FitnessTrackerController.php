@@ -126,6 +126,7 @@ class FitnessTrackerController{
             $this->showCreateAccount("This username is already taken. Try something else!");
             return;
         }
+        $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
 
 
         // convert height to inches for easy read
@@ -152,6 +153,7 @@ class FitnessTrackerController{
         $_SESSION["age"] = $_POST["Age"];
         $_SESSION["height"] = $heightInInches;
         $_SESSION["weight"] = $_POST["Weight"];
+        echo "hit";
 
         // Redirect to dashboard or activity page (you can define where to go)
         header("Location: ?command=visitProfile");
@@ -185,10 +187,11 @@ class FitnessTrackerController{
         $user = $this->retrieveUser($email);
         
         // check if user exists in database
-        if (empty($user)){
+        /* if (empty($user)){
             $this->showWelcome("This email is not connected to an account. Would you like to sign up?");
         
         } 
+            */
 
         // check if password is identical to hash
         if(password_verify($password, $user["passwd"])){
