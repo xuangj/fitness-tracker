@@ -113,7 +113,6 @@ class FitnessTrackerController{
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
             $this->showCreateAccount("Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.");
         }
-        }
 
         // check if username is unique and if account w/ email already exists
         if($this->checkUserExist() === true){
