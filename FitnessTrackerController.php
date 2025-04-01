@@ -185,10 +185,11 @@ class FitnessTrackerController{
         $user = $this->retrieveUser($email);
 
         // check if user exists in database
-        if (empty($user)){
+        /* if (empty($user)){
             $this->showWelcome("This email is not connected to an account. Would you like to sign up?");
         
         } 
+            */
 
         // check if password is identical to hash
         if(password_verify($password, $user["passwd"])){
