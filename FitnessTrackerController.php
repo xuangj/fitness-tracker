@@ -153,7 +153,6 @@ class FitnessTrackerController{
         $_SESSION["age"] = $_POST["Age"];
         $_SESSION["height"] = $heightInInches;
         $_SESSION["weight"] = $_POST["Weight"];
-        echo "hit";
 
         // Redirect to dashboard or activity page (you can define where to go)
         header("Location: ?command=visitProfile");

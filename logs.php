@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['userId'])) {
+if (!isset($_SESSION['userid'])) {
     header("Location: login.php");
     exit;
-}
+} 
 
 $host     = "db";
 $port     = "5432";
@@ -15,7 +15,7 @@ $dbpass   = "cs4640LocalUser!";
 $dbconn = pg_connect("host=$host port=$port dbname=$dbname user=$dbuser password=$dbpass");
 if (!$dbconn) {
     die("Error connecting to the database.");
-}
+} 
 
 $query = "SELECT * FROM activities WHERE user_id = $1 ORDER BY activity_datetime DESC";
 $result = pg_query_params($dbconn, $query, [$_SESSION['user_id']]);
