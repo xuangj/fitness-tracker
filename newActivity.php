@@ -77,6 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="New Activity scene">
     <meta name="keywords" content="New Activity">
+    <meta name="author" content="Olivia Chambers">
     <meta property="og:title" content="New Activity">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cs4640.cs.virginia.edu/pnq6th/sprint2/newActivity.php">
