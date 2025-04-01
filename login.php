@@ -65,7 +65,7 @@
                                     </div>
                                     <button class="btn " type="button" id="forgotButton"><u>Forgot password?</u></button>
                                     <div class="d-flex flex-column align-items-center"> 
-                                        <button class="btn btn-primary" type="button" id="LoginButton">Log In</button>
+                                        <button type="submit" class="btn btn-primary">Log In</button>
                                         <p class="mb-0 mt-0" style="color:white">OR</p>
                                         <!--Allows user to create new account-->
                                         <a class="btn btn-primary" type="button" href="createAccount.php" id="CreateAccountButton">Create an Account</a>
