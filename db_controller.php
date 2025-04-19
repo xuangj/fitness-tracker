@@ -1,19 +1,19 @@
 <!--Xuang Jin-->
 
 <?php
-    include 'config.php';
+    //include 'config.php';
 
     // for server
-    $host = "localhost"; 
+    /* $host = "localhost"; 
     $port = 5432;
     $dbname = "yyf2uf";
     $user = "yyf2uf";
-    $password = "mQXFbLeZsW8Z"; 
-    /* $host = "db";
+    $password = "mQXFbLeZsW8Z"; */
+    $host = "db";
     $port = "5432";
     $dbname = "example";
     $user = "localuser";
-    $password = "cs4640LocalUser!"; */
+    $password = "cs4640LocalUser!"; 
     
     $dbHandle = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
 

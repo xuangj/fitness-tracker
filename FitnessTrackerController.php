@@ -1,23 +1,23 @@
 <?php
 session_start();
 
-include 'config.php';
+//include 'config.php';
 
 
 class FitnessTrackerController{
     private $db;
     public function __construct($input){
         // for server
-        $host = "localhost";
+        /*$host = "localhost";
         $port = 5432;
         $dbname = "yyf2uf";
         $user = "yyf2uf";
-        $password = "mQXFbLeZsW8Z"; 
-        /*$host = "db";
+        $password = "mQXFbLeZsW8Z";  */
+        $host = "db";
         $port = "5432";
         $dbname = "example";
         $user = "localuser";
-        $password = "cs4640LocalUser!";*/
+        $password = "cs4640LocalUser!";
 
         $this->input = $input;
         $this->db = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
@@ -37,8 +37,8 @@ class FitnessTrackerController{
 
         switch($command){
             case "createAccount":
-                $this->showCreateAccount();
                 $this->createAccount();
+                $this->showCreateAccount();
                 break;
             case "login":
                 $this->login();
@@ -112,35 +112,51 @@ class FitnessTrackerController{
 
                 if(!is_numeric($_POST["Feet"]) || !is_numeric($_POST["Inches"])){
                     $message = "Please enter a valid height.";
-                } else if(!is_numeric($_POST["Weight"])){
+                    $this->showCreateAccount($message);
+                    return;
+                } 
+                if(!is_numeric($_POST["Weight"])){
                     $message = "Please enter a valid weight.";
-                } else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
+                    $this->showCreateAccount($message);
+                    return;
+                } 
+                if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
                     $message = "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.";
-                } else if($this->checkUserExist($_POST["Email"]) === true){
-                    $message = "This email is linked to an existing account. Would you like to log in?";
-                } else if($this->checkUsernameTaken($_POST["Username"]) === true){
-                    $message = "This username is already taken. Try something else!";
-                } else {
-                    $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
-                    $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
-                    
-                    $query = "INSERT INTO ftUsers (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
-                    $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
-                    $createUser = pg_query_params($this->db, $query, $params);
-
-                    $_SESSION["name"] = $_POST["Name"];
-                    $_SESSION["username"] = $_POST["Username"];
-                    $_SESSION["email"] = $_POST["Email"];
-                    $_SESSION["gender"] = $_POST["Gender"];
-                    $_SESSION["age"] = $_POST["Age"];
-                    $_SESSION["height"] = $heightInInches;
-                    $_SESSION["weight"] = $_POST["Weight"];
-
-                    header("Location: ?command=visitProfile");
-                    exit;
+                    $this->showCreateAccount($message);
+                    return;
                 }
-            }
-        $this->showCreateAccount($message);
+                if($this->checkUserExist($_POST["Email"]) === true){
+                    $message = "This email is linked to an existing account. Would you like to log in?";
+                    $this->showCreateAccount($message);
+                    return;
+                }
+                if($this->checkUsernameTaken($_POST["Username"]) === true){
+                    $message = "This username is already taken. Try something else!";
+                    $this->showCreateAccount($message);
+                    return;
+                } 
+                $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
+                $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
+                
+                $query = "INSERT INTO ftUsers (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
+                $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
+                $createUser = pg_query_params($this->db, $query, $params);
+
+                $_SESSION["name"] = $_POST["Name"];
+                $_SESSION["username"] = $_POST["Username"];
+                $_SESSION["email"] = $_POST["Email"];
+                $_SESSION["gender"] = $_POST["Gender"];
+                $_SESSION["age"] = $_POST["Age"];
+                $_SESSION["height"] = $heightInInches;
+                $_SESSION["weight"] = $_POST["Weight"];
+
+                header("Location: ?command=visitProfile");
+                exit;
+        } else {
+            $this->showCreateAccount("Please input missing information");
+        }
+        
+        //$this->showCreateAccount($message);
     }
 
 

@@ -1,5 +1,4 @@
 <?php
-session_start();
 $message = isset($_SESSION['create_account_message']) ? $_SESSION['create_account_message'] : "";
 unset($_SESSION['create_account_message']); 
 ?>
