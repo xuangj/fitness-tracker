@@ -1,3 +1,8 @@
+<?php
+// Process any messages passed from the controller
+$message = isset($_SESSION['create_account_message']) ? $_SESSION['create_account_message'] : "";
+unset($_SESSION['create_account_message']); // Clear the message after displaying it
+?>
 <!DOCTYPE html>
 <html lang="en">
    
