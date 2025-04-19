@@ -1,4 +1,8 @@
+<!--Xuang Jin-->
+
 <?php
+    include 'config.php';
+
     // for server
     $host = "localhost"; 
     $port = 5432;
@@ -19,13 +23,13 @@
         die("An error occurred connecting to the database");
     }
 
-    pg_query($dbHandle, "drop table if exists users");
-    pg_query($dbHandle, "drop sequence if exists user_seq");
+    pg_query($dbHandle, "drop table if exists ftUsers;");
+    pg_query($dbHandle, "drop sequence if exists ftUser_seq;");
 
-    $res = pg_query($dbHandle, "create sequence user_seq;");
+    $res  = pg_query($dbHandle, "create sequence ftUser_seq;");
 
-    $res = pg_query($dbHandle, "create table users (
-            userId int primary key default nextval ('user_seq'),
+    $res = pg_query($dbHandle, "create table ftUsers (
+            userId serial primary key,
             name text,
             username text,
             email text,
@@ -34,5 +38,6 @@
             age int,
             height int,
             weight int);") or die(pg_last_error($dbHandle));
+    
 
     echo "Done!";
