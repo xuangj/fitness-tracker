@@ -6,11 +6,16 @@ if (!isset($_SESSION["username"])) {
     exit;
 }
 
-$host     = "db";
-$port     = "5432";
-$dbname   = "example";
-$user     = "localuser";
-$password = "cs4640LocalUser!";
+$host = "localhost"; 
+$port = 5432;
+$dbname = "pnq6th";
+$user = "pnq6th";
+$password = "sWYvrJqwKYgB";
+/*$host = "db";
+$port = "5432";
+$dbname = "example";
+$user = "localuser";
+$password = "cs4640LocalUser!"; */
 
 $dbconn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
 if (!$dbconn) {

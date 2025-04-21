@@ -8,16 +8,16 @@ class FitnessTrackerController{
     private $db;
     public function __construct($input){
         // for server
-        /*$host = "localhost";
+        $host = "localhost";
         $port = 5432;
-        $dbname = "yyf2uf";
-        $user = "yyf2uf";
-        $password = "mQXFbLeZsW8Z";  */
-        $host = "db";
+        $dbname = "pnq6th";
+        $user = "pnq6th";
+        $password = "sWYvrJqwKYgB";
+        /* $host = "db";
         $port = "5432";
         $dbname = "example";
         $user = "localuser";
-        $password = "cs4640LocalUser!";
+        $password = "cs4640LocalUser!"; */
 
         $this->input = $input;
         $this->db = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
@@ -138,26 +138,30 @@ class FitnessTrackerController{
                 $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
                 $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
                 
-                $query = "INSERT INTO ftUsers (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
+                $query = "INSERT INTO ftUsers (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING userid;";
                 $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
-                $createUser = pg_query_params($this->db, $query, $params);
+                $result = pg_query_params($this->db, $query, $params);
+                if (! $result) {
+                    error_log("Create account failed: " . pg_last_error($this->db));
+                    $this->showCreateAccount("Database error. Please try again.");
+                    return;
+                }
 
-                $_SESSION["name"] = $_POST["Name"];
+                $row = pg_fetch_assoc($result);
+                $_SESSION["user_id"] = $row["userid"];
+
+                $_SESSION["name"]     = $_POST["Name"];
                 $_SESSION["username"] = $_POST["Username"];
                 $_SESSION["email"] = $_POST["Email"];
                 $_SESSION["gender"] = $_POST["Gender"];
                 $_SESSION["age"] = $_POST["Age"];
                 $_SESSION["height"] = $heightInInches;
                 $_SESSION["weight"] = $_POST["Weight"];
-
+  
                 header("Location: ?command=visitProfile");
                 exit;
-        } else {
-            $this->showCreateAccount("Please input missing information");
-        }
-        
-        //$this->showCreateAccount($message);
-    }
+            }
+}
 
 
 
@@ -193,6 +197,7 @@ class FitnessTrackerController{
         }
         // check if password is identical to hash
         if(password_verify($password, $user["passwd"])){
+            $_SESSION["user_id"]   = $user["userid"];
             $_SESSION["name"] = $user["name"];
             $_SESSION["email"] = $user["email"];
             $_SESSION["username"] = $user["username"];

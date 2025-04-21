@@ -50,6 +50,7 @@
     
     <nav class="navbar">
         <ul>
+            <li><a href="newActivity.php">Activity</a></li>
             <li><a href="goals.php">Goals</a></li>
             <li><a href="logs.php">Logs</a></li>
             <li><a href="profile.php">Profile</a></li>
