@@ -172,14 +172,14 @@ button:hover {
 }
 
 .bmi-calculator {
-    position: absolute;
-    top: 70px;
+    position: static;
+    width: 250px;
+    top: 300px;
     left: 40px;
     background: #f8f9fa;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 250px;
 }
 .bmi-calculator input {
     width: 100%;
@@ -225,7 +225,6 @@ button:hover {
     text-align: center;
 }
 
-
 .goal-button {
     background-color: #f8f9fa;
     border: 2px solid #333;
@@ -244,31 +243,16 @@ button:hover {
 }
 
 .bar-chart-container {
-    position: fixed;
-    top: 200px;
-    right: 60px;
-    width: 1010px;
-    height: 200px;
-    background: white;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    flex: 1;
+    max-width: 800px;
 }
 
-.edit-container {
+.goals-layout {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
-    padding: 20px;
-}
-
-.edit-box {
-    width: 400px; 
-    background-color: #fff;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding: 0 1rem;
 }

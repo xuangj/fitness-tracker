@@ -1,7 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
@@ -21,14 +25,12 @@ if (!$dbconn) {
     die("Error connecting to the database.");
 }
 
-$error = "";
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $title           = trim($_POST["Title"]);
     $activityType    = trim($_POST["activityType"]);
-    $durationHours   = trim($_POST["durationHours"]);
-    $durationMinutes = trim($_POST["durationMinutes"]);
-    $durationSeconds = trim($_POST["durationSeconds"]);
+    $durationHours   = (int)trim($_POST["durationHours"]);
+    $durationMinutes = (int)trim($_POST["durationMinutes"]);
+    $durationSeconds = (int)trim($_POST["durationSeconds"]);
     $date            = trim($_POST["date"]);
     $time            = trim($_POST["time"]);
     $ampm            = trim($_POST["ampm"]);
@@ -66,8 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
          $result = pg_query_params($dbconn, $query, $params);
 
          if (!$result) {
-            $error = pg_last_error($dbconn);
-         } else {
+            die("Insert failed: " . pg_last_error($dbconn));
+        } else {
             header("Location: logs.php");
             exit;
         }
@@ -98,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="container-fluid">
             <a class="navbar-brand" href="profile.php">Fitness Tracker</a>
             <div>
-                <a class="btn btn-outline-light me-2" href="newActivity.php">Add Activity</a>
                 <a class="btn btn-outline-light" href="goals.php">Goals</a>
                 <a class="btn btn-outline-light" href="profile.php">Profile</a>
                 <a class="btn btn-outline-light" href="logs.php">Logs</a>
@@ -112,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <form action="newActivity.php" method="POST">
+        <form id="newActivityForm" action="newActivity.php" method="POST">
             <!-- Title -->
             <div class="mb-3">
                 <label for="Title" class="form-label">Title</label>
@@ -185,6 +186,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
     </div>
     
+    <script>
+        (() => {
+        const form = document.getElementById('newActivityForm');
+        form.addEventListener('submit', e => {
+        const title = form.Title.value.trim();
+        if (title.length < 3) {
+      e.preventDefault();
+      alert('Title must be at least 3 characters long');
+      form.Title.focus();
+    }
+
+  });
+})();
+
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-mQ93r8dhb2uhT9LxeB1Mpr9ZmIdfuK4JbJ8bYvcj0Fow0PHeEq2zYkXf0Ehdc6Bf" 
             crossorigin="anonymous"></script>
