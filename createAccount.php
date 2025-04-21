@@ -80,7 +80,7 @@ unset($_SESSION['create_account_message']);
                                 <input type="password" class="form-control" id="Password" name="Password">
                             </div>
 
-                            <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
+                            <p style="font-size:10pt">Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.</p>
                         </div>
                     </div>
                 </div>

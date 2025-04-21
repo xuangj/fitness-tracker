@@ -36,6 +36,7 @@
 
             </div>
             <nav class="nav-buttons">
+                <button onclick="location.href='newActivity.php'">Add Activity</button>
                 <button onclick="location.href='goals.php'">Goals</button>
                 <button onclick="location.href='logs.php'">Logs</button>
                 <button onclick="location.href='logout.php'">Logout</button>
