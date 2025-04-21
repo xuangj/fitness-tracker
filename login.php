@@ -23,6 +23,34 @@
         https://www.w3schools.com/css/css3_shadows.asp
         https://www.w3schools.com/cssref/css3_pr_justify-content.php
         -->
+        <script>
+            function showPassword() {
+                const passwd = document.getElementById("Password");
+                const toggleButton = document.getElementById("togglePassword");
+
+                toggleButton.addEventListener("click", function() {
+                    if(passwd.type === "password") {
+                        passwd.type = "text";
+                        toggleButton.textContent = "Hide";
+                    } else {
+                        passwd.type = "password";
+                        toggleButton.textContent = "Show";
+                    }
+                });
+            }
+
+            function validateEmail() {
+                const email = document.getElementById("Email").value;
+                const err = document.getElementById("error-msg");
+
+                if(!email.includes("@") || !email.includes(".")) {
+                    err.textContent = "Please enter a valid email.";
+                } else{
+                    err.textContent = "";
+                }
+            }
+            document.addEventListener("DOMContentLoaded", showPassword);
+        </script>
     </head>
 
     <body>
@@ -56,19 +84,23 @@
                                     <!--Allows user to log into existing account using set username and password-->
                                     <label for="Email">Email</label>
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control LogInInfo" id="Email" aria-describedby="emailHelp" name="Email">
+                                        <input type="text" class="form-control LogInInfo" id="Email" aria-describedby="emailHelp" name="Email" oninput="validateEmail()">
                                     </div>
+
+                                    <div id="error-msg" style="color:red;"></div>
+
             
                                     <label for="Password">Password</label>
                                     <div class="input-group mb-3">
-                                        <input type="password" class="form-control LogInInfo" input id="Password" name="Password">
+                                        <input type="password" class="form-control LogInInfo" id="Password" name="Password">
+                                        <button type="button" id="togglePassword">Show</button>
                                     </div>
                                     <button class="btn " type="button" id="forgotButton"><u>Forgot password?</u></button>
                                     <div class="d-flex flex-column align-items-center"> 
                                         <button type="submit" class="btn btn-primary">Log In</button>
                                         <p class="mb-0 mt-0" style="color:white">OR</p>
                                         <!--Allows user to create new account-->
-                                        <a class="btn btn-primary" type="button" href="createAccount.php" id="CreateAccountButton">Create an Account</a>
+                                        <a class="btn btn-primary" href="createAccount.php" id="CreateAccountButton">Create an Account</a>
                                     </div> 
                                 </form>
                             </div>

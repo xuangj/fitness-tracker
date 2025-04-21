@@ -1,5 +1,16 @@
 <?php
-    $userName = "John Doe";  //need to update for actual user name
+    //$userName = "John Doe";  //need to update for actual user name
+    session_start();
+    $name = $_SESSION["name"];
+    $username = $_SESSION["username"];
+    $email = $_SESSION["email"];
+    $gender = $_SESSION["gender"];    
+    $age = $_SESSION["age"];
+    $weight = $_SESSION["weight"];
+    $height = $_SESSION["height"];
+    $inches = $height % 12;
+    $feet = ($height - $inches) / 12;
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +48,8 @@
             </div>
             <nav class="nav-buttons">
                 <button onclick="location.href='goals.php'">Goals</button>
-                <button onclick="location.href='logs.php'">Logs</button>
+                <!--<button onclick="location.href='logs.php'">Logs</button> -->
+                <button id="logs-btn" type="button" class="btn">Logs</button>
                 <button onclick="location.href='logout.php'">Logout</button>
             </nav>
         </aside>

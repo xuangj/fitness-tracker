@@ -29,6 +29,36 @@ unset($_SESSION['create_account_message']);
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="styles/main.css">
+        <script>
+            function showPassword() {
+                const passwd = document.getElementById("Password");
+                const toggleButton = document.getElementById("togglePassword");
+
+                toggleButton.addEventListener("click", function() {
+                    if(passwd.type === "password") {
+                        passwd.type = "text";
+                        toggleButton.textContent = "Hide";
+                    } else {
+                        passwd.type = "password";
+                        toggleButton.textContent = "Show";
+                    }
+                });
+            }
+
+            function validateEmail() {
+                const email = document.getElementById("Email").value;
+                const err = document.getElementById("error-msg");
+
+                if(!email.includes("@") || !email.includes(".")) {
+                    err.textContent = "Please enter a valid email.";
+                } else{
+                    err.textContent = "";
+                }
+            }
+            
+            document.addEventListener("DOMContentLoaded", showPassword);
+
+        </script>
     </head>
     
     <body>
@@ -67,7 +97,7 @@ unset($_SESSION['create_account_message']);
 
                             <div class="mb-3">
                                 <label for="Email">Email</label>
-                                <input type="email" class="form-control" id="Email" name="Email">
+                                <input type="email" class="form-control" id="Email" name="Email" oninput="validateEmail()">
                             </div>
 
                             <div class="mb-3">
@@ -78,9 +108,11 @@ unset($_SESSION['create_account_message']);
                             <div class="mb-3">
                                 <label for="Password">Password</label>
                                 <input type="password" class="form-control" id="Password" name="Password">
+                                <button type="button" id="togglePassword">Show</button>
                             </div>
 
                             <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
+                            <div id="error-msg" style="color:red;"></div>
                         </div>
                     </div>
                 </div>

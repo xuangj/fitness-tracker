@@ -2,6 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userid'])) {
+    echo $userid;
     header("Location: login.php");
     exit;
 } 
