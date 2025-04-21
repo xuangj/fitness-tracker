@@ -121,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container-fluid">
       <a class="navbar-brand" href="logs.php">Fitness Tracker</a>
       <div>
-        <a class="btn btn-outline-light me-2" href="newActivity.php">Add</a>
         <a class="btn btn-outline-light me-2" href="goals.php">Goals</a>
         <a class="btn btn-outline-light me-2" href="profile.php">Profile</a>
         <a class="btn btn-outline-light" href="logout.php">Logout</a>

@@ -1,7 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
@@ -21,14 +25,12 @@ if (!$dbconn) {
     die("Error connecting to the database.");
 }
 
-$error = "";
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $title           = trim($_POST["Title"]);
     $activityType    = trim($_POST["activityType"]);
-    $durationHours   = trim($_POST["durationHours"]);
-    $durationMinutes = trim($_POST["durationMinutes"]);
-    $durationSeconds = trim($_POST["durationSeconds"]);
+    $durationHours   = (int)trim($_POST["durationHours"]);
+    $durationMinutes = (int)trim($_POST["durationMinutes"]);
+    $durationSeconds = (int)trim($_POST["durationSeconds"]);
     $date            = trim($_POST["date"]);
     $time            = trim($_POST["time"]);
     $ampm            = trim($_POST["ampm"]);
@@ -66,8 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
          $result = pg_query_params($dbconn, $query, $params);
 
          if (!$result) {
-            $error = pg_last_error($dbconn);
-         } else {
+            die("Insert failed: " . pg_last_error($dbconn));
+        } else {
             header("Location: logs.php");
             exit;
         }
@@ -98,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="container-fluid">
             <a class="navbar-brand" href="profile.php">Fitness Tracker</a>
             <div>
-                <a class="btn btn-outline-light me-2" href="newActivity.php">Add Activity</a>
                 <a class="btn btn-outline-light" href="goals.php">Goals</a>
                 <a class="btn btn-outline-light" href="profile.php">Profile</a>
                 <a class="btn btn-outline-light" href="logs.php">Logs</a>

@@ -197,7 +197,7 @@ class FitnessTrackerController{
         }
         // check if password is identical to hash
         if(password_verify($password, $user["passwd"])){
-            $_SESSION["user_id"]   = $user["userid"];
+            $_SESSION["user_id"] = $user["userid"];
             $_SESSION["name"] = $user["name"];
             $_SESSION["email"] = $user["email"];
             $_SESSION["username"] = $user["username"];

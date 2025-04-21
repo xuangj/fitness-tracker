@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["username"])) {
-    header("Location: ?command=login");
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
     exit;
 }
 
@@ -56,21 +56,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($errors)) {
-        $query  = "UPDATE users SET name = $1, email = $2, gender = $3, age = $4, weight = $5, height = $6 WHERE username = $7";
+        $query  = "UPDATE ftusers SET name = $1, email = $2, gender = $3, age = $4, weight = $5, height = $6 WHERE username = $7";
         $params = [$name, $email, $gender, intval($age), floatval($weight), $height, $_SESSION["username"]];
         $result = pg_query_params($dbconn, $query, $params);
 
         if ($result) {
             $_SESSION["name"]  = $name;
             $_SESSION["email"] = $email;
-            header("Location: ?command=profile");
+            header("Location: profile.php");
             exit;
         } else {
             $errors[] = "Failed to update profile. Please try again.";
         }
     }
 } else {
-    $query  = "SELECT name, email, gender, age, weight, height FROM users WHERE username = $1";
+    $query  = "SELECT name, email, gender, age, weight, height FROM ftusers WHERE username = $1";
     $result = pg_query_params($dbconn, $query, [$_SESSION["username"]]);
     $userInfo = pg_fetch_assoc($result);
 
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="submit" value="Update Profile">
             </form>
             <br>
-            <button onclick="location.href='?command=profile'">Cancel</button>
+            <button onclick="location.href='profile.php'">Cancel</button>
         </div>
     </div>
 </body>
