@@ -57,6 +57,40 @@
             <canvas id="barChart"></canvas>
         </div>
     </div>
+
+    <script>
+    class BMI {                         //javascript object 
+      constructor(weight, height) {
+        this.weight = weight;
+        this.height = height;
+      }
+      calculate() {
+        return (this.weight / (this.height * this.height)) * 703;
+      }
+      category(bmi) {
+        if (bmi < 18.5) return 'Underweight';
+        if (bmi < 25)   return 'Normal';
+        if (bmi < 30)   return 'Overweight';
+        return 'Obese';
+      }
+    }
+
+    document.querySelector('.bmi-calculator button')
+            .addEventListener('click', () => {
+      const w = parseFloat(document.getElementById('weight').value);
+      const h = parseFloat(document.getElementById('height').value);
+      const output = document.getElementById('bmiResult');
+      if (w > 0 && h > 0) {
+        const bmiObj = new BMI(w, h);
+        const val    = bmiObj.calculate();
+        const cat    = bmiObj.category(val);
+        output.innerText = `Your BMI: ${val.toFixed(1)} (${cat})`;
+      } else {
+        output.innerText = 'Please enter valid values.';
+      }
+    });
+    </script>
+
   
     <script>
     document.addEventListener('DOMContentLoaded', () => {
