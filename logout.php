@@ -1,4 +1,4 @@
-\\Olivia Chambers
+<!--Olivia Chambers-->
 <?php
 session_start();
 session_destroy();

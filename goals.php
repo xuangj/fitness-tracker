@@ -1,3 +1,4 @@
+<!--Olivia Chambers-->
 <?php
     // starts the session to retrieve dynamic data (e.g., username from a login session)
     session_start();

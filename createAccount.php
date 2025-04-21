@@ -1,3 +1,4 @@
+<!--Xuang Jin-->
 <?php
 $message = isset($_SESSION['create_account_message']) ? $_SESSION['create_account_message'] : "";
 unset($_SESSION['create_account_message']); 

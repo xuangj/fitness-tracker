@@ -1,3 +1,4 @@
+<!--Olivia Chambers-->
 <?php
 class Config{
     public static $db = [
