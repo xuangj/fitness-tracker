@@ -225,7 +225,6 @@ button:hover {
     text-align: center;
 }
 
-
 .goal-button {
     background-color: #f8f9fa;
     border: 2px solid #333;
@@ -246,24 +245,6 @@ button:hover {
 .bar-chart-container {
     flex: 1;
     max-width: 800px;
-}
-
-.edit-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
-    padding: 20px;
-}
-
-.edit-box {
-    width: 400px; 
-    background-color: #fff;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .goals-layout {
