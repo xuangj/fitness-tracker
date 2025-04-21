@@ -3,26 +3,21 @@
 <?php
 session_start();
 
-//include 'config.php';
-
 
 class FitnessTrackerController{
     private $db;
     public function __construct($input){
-        // for server
-        $host = "localhost";
-        $port = 5432;
-        $dbname = "pnq6th";
-        $user = "pnq6th";
-        $password = "sWYvrJqwKYgB";
-        /* $host = "db";
-        $port = "5432";
-        $dbname = "example";
-        $user = "localuser";
-        $password = "cs4640LocalUser!"; */
+        include 'config.php';
+
+        $db = Config::$db;
+        $host = $db["host"];
+        $port = $db["port"];
+        $user = $db["user"];
+        $pass = $db["pass"];
+        $database = $db["database"]; 
 
         $this->input = $input;
-        $this->db = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
+        $this->db = pg_connect("host=$host port=$port dbname=$database user=$user password=$pass");
 
     }
 
@@ -136,7 +131,6 @@ class FitnessTrackerController{
             $this->showCreateAccount("This username is already taken. Try something else!");
             return;
         }
-        $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
 
 
         // convert height to inches for easy read
@@ -167,6 +161,10 @@ class FitnessTrackerController{
         // Redirect to dashboard or activity page (you can define where to go)
         header("Location: ?command=visitProfile");
         return;
+        } else {
+            $this->showCreateAccount("Please fill in all information");
+            return;
+        }
     }
 
 

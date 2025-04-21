@@ -6,19 +6,17 @@ if (!isset($_SESSION['user_id'])) {
   exit;
 }
 
-$host = "localhost"; 
-$port = 5432;
-$dbname = "pnq6th";
-$user = "pnq6th";
-$password = "sWYvrJqwKYgB";
-/*$host = "db";
-$port = "5432";
-$dbname = "example";
-$user = "localuser";
-$password = "cs4640LocalUser!"; */
+include 'config.php';
 
-$dbconn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password") or die("DB connect error");
+$db = Config::$db;
+$host = $db["host"];
+$port = $db["port"];
+$user = $db["user"];
+$pass = $db["pass"];
+$database = $db["database"]; 
 
+$this->input = $input;
+$this->db = pg_connect("host=$host port=$port dbname=$database user=$user password=$pass");
 $error     = "";
 $activity  = null;
 
