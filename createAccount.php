@@ -1,3 +1,7 @@
+<?php
+$message = isset($_SESSION['create_account_message']) ? $_SESSION['create_account_message'] : "";
+unset($_SESSION['create_account_message']); 
+?>
 <!DOCTYPE html>
 <html lang="en">
    
@@ -49,6 +53,7 @@
         <form action="index.php?command=createAccount" method="POST">
         <div class="container py-5">
             <div class="row justify-content-center">
+                <?=$message?>
                 <!-- Login Information Card -->
                 <div class="col-md-5">
                     <div class="card shadow-sm">
@@ -75,11 +80,10 @@
                                 <input type="password" class="form-control" id="Password" name="Password">
                             </div>
 
-                            <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
+                            <p style="font-size:10pt">Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.</p>
                         </div>
                     </div>
                 </div>
-
                 <!-- Physical Information Card -->
                 <div class="col-md-5">
                     <div class="card shadow-sm">
@@ -99,7 +103,7 @@
                             <div class="mb-3">
                                 <label for="age">Age</label>
                                 <div class="input-group">
-                                    <input id="Age" type="text" class="form-control" name="Age" placeholder="0">
+                                    <input id="Age" type="number" class="form-control" name="Age" placeholder="0">
                                     <span class="input-group-text">Years</span>
                                 </div>
                             </div>
@@ -107,9 +111,9 @@
                             <div class="mb-3">
                                 <label for="Height">Height</label>
                                 <div class="input-group">
-                                    <input id="Feet" type="text" class="form-control" name="Feet" placeholder="0">
+                                    <input id="Feet" type="number" class="form-control" name="Feet" placeholder="0">
                                     <span class="input-group-text">feet</span>
-                                    <input id="Inches" type="text" class="form-control" name="Inches" placeholder="00">
+                                    <input id="Inches" type="number" class="form-control" name="Inches" placeholder="00">
                                     <span class="input-group-text">inches</span>
                                 </div>
                             </div>
@@ -117,7 +121,7 @@
                             <div class="mb-3">
                                 <label for="Weight">Weight</label>
                                 <div class="input-group">
-                                    <input id="Weight" type="text" class="form-control" name="Weight" placeholder="0">
+                                    <input id="Weight" type="number" class="form-control" name="Weight" placeholder="0">
                                     <span class="input-group-text">pounds</span>
                                 </div>
                             </div>

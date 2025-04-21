@@ -24,32 +24,9 @@
 
 </head>
 <body>
-
-    <div class="bmi-calculator">
-        <h3>BMI Calculator</h3>
-        <label for="weight">Weight (lbs):</label>
-        <input type="number" id="weight" placeholder="Enter weight">
-        <label for="height">Height (in):</label>
-        <input type="number" id="height" placeholder="Enter height">
-        <button onclick="calculateBMI()">Calculate BMI</button>
-        <p class="bmi-result" id="bmiResult"></p>
-    </div>
-
-    <div class="fitness-goals">
-        <h3 class="goals-header">Fitness Goals</h3>
-        <button class="goal-button" onclick="selectGoal('Calorie Deficit')">Calorie Deficit</button>
-        <button class="goal-button" onclick="selectGoal('Steps')">Steps</button>
-        <button class="goal-button" onclick="selectGoal('Sleep')">Sleep</button>
-        <button class="goal-button" onclick="selectGoal('New Goal')">New Goal</button>
-    </div>
-
-    <div class="bar-chart-container">
-        <canvas id="barChart"></canvas>
-    </div>
-
-    
     <nav class="navbar">
         <ul>
+            <li><a href="newActivity.php">Activity</a></li>
             <li><a href="goals.php">Goals</a></li>
             <li><a href="logs.php">Logs</a></li>
             <li><a href="profile.php">Profile</a></li>
@@ -62,13 +39,103 @@
             <h1>Fitness Goals</h1>
             <p>Track your fitness goals progress below.</p>
 
-            <section class="statistics">
-                <h2>Your Fitness Statistics</h2>
-                <canvas id="statsChart" width="1400" height="400"></canvas>
-            </section>
-
         </main>
     </div>
+    
+    <div class="goals-layout">
+        <div class="bmi-calculator">
+            <h3>BMI Calculator</h3>
+            <label for="weight">Weight (lbs):</label>
+            <input type="number" id="weight" placeholder="Enter weight">
+            <label for="height">Height (in):</label>
+            <input type="number" id="height" placeholder="Enter height">
+            <button onclick="calculateBMI()">Calculate BMI</button>
+            <p class="bmi-result" id="bmiResult"></p>
+        </div>
+
+        <div class="bar-chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+    class BMI {                         //javascript object 
+      constructor(weight, height) {
+        this.weight = weight;
+        this.height = height;
+      }
+      calculate() {
+        return (this.weight / (this.height * this.height)) * 703;
+      }
+      category(bmi) {
+        if (bmi < 18.5) return 'Underweight';
+        if (bmi < 25)   return 'Normal';
+        if (bmi < 30)   return 'Overweight';
+        return 'Obese';
+      }
+    }
+
+    document.querySelector('.bmi-calculator button')
+            .addEventListener('click', () => {
+      const w = parseFloat(document.getElementById('weight').value);
+      const h = parseFloat(document.getElementById('height').value);
+      const output = document.getElementById('bmiResult');
+      if (w > 0 && h > 0) {
+        const bmiObj = new BMI(w, h);
+        const val    = bmiObj.calculate();
+        const cat    = bmiObj.category(val);
+        output.innerText = `Your BMI: ${val.toFixed(1)} (${cat})`;
+      } else {
+        output.innerText = 'Please enter valid values.';
+      }
+    });
+    </script>
+
+  
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('barChart').getContext('2d');
+      const container = document.querySelector('.bar-chart-container');
+
+      fetch('logs.php?command=activitiesAPI')
+        .then(res => {
+          if (!res.ok) throw new Error(res.statusText);
+          return res.json();
+        })
+        .then(activities => {
+          const monthly = Array(12).fill(0);
+          activities.forEach(a => {
+            const m = new Date(a.activity_datetime).getMonth();
+            monthly[m]++;
+          });
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['Jan','Feb','Mar','Apr','May','Jun',
+                       'Jul','Aug','Sep','Oct','Nov','Dec'],
+              datasets: [{
+                label: 'Workouts per Month',
+                data: monthly,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: { beginAtZero: true, precision: 0 }
+              }
+            }
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          container.innerHTML =
+            '<p class="text-danger">Could not load activity data for chart.</p>';
+        });
+    });
+    </script>
+    
 
     <script>
 
@@ -81,71 +148,8 @@
             } else {
                 document.getElementById('bmiResult').innerText = "Please enter valid values.";
             }
-        }
+        }  
 
-
-        function selectGoal(goal) {
-            alert("Selected Goal: " + goal);
-        }    
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var ctx = document.getElementById("barChart").getContext("2d");
-
-        var barChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"], // X-axis labels
-                datasets: [{
-                    label: "Activity %",
-                    data: [50, 70, 30, 40, 74, 50],
-                    backgroundColor: "rgba(75, 192, 192, 0.6)",
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
-    });
-
-        var ctx = document.getElementById('statsChart').getContext('2d');
-        var statsChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [{
-                    label: 'Weight Progress',
-                    data: [160, 158, 155, 153],
-                    borderColor: 'rgb(75, 192, 192)',
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Weeks'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Weight (lbs)'
-                        }
-                    }
-                    }
-                }
-            });
     </script>
 </body>
 </html>

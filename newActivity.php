@@ -1,30 +1,36 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 if (!isset($_SESSION['userid'])) {
     header("Location: login.php");
     exit;
 }
+$host = "localhost"; 
+$port = 5432;
+$dbname = "pnq6th";
+$user = "pnq6th";
+$password = "sWYvrJqwKYgB";
+/*$host = "db";
+$port = "5432";
+$dbname = "example";
+$user = "localuser";
+$password = "cs4640LocalUser!"; */
 
-$host     = "db";
-$port     = "5432";
-$dbname   = "example";
-$dbuser   = "localuser";
-$dbpass   = "cs4640LocalUser!";
-
-$dbconn = pg_connect("host=$host port=$port dbname=$dbname user=$dbuser password=$dbpass");
+$dbconn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
 if (!$dbconn) {
     die("Error connecting to the database.");
 }
 
-$error = "";
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $title           = trim($_POST["Title"]);
     $activityType    = trim($_POST["activityType"]);
-    $durationHours   = trim($_POST["durationHours"]);
-    $durationMinutes = trim($_POST["durationMinutes"]);
-    $durationSeconds = trim($_POST["durationSeconds"]);
+    $durationHours   = (int)trim($_POST["durationHours"]);
+    $durationMinutes = (int)trim($_POST["durationMinutes"]);
+    $durationSeconds = (int)trim($_POST["durationSeconds"]);
     $date            = trim($_POST["date"]);
     $time            = trim($_POST["time"]);
     $ampm            = trim($_POST["ampm"]);
@@ -43,30 +49,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
          $error = "Title and activity type are required.";
     } else {
          $query = "INSERT INTO activities 
-                     (user_id, title, activity_type, duration_seconds, activity_datetime, description, steps, total_distance, average_pace, calories_burnt)
+                     (userid, title, activity_type, duration_seconds, activity_datetime, description, steps, total_distance, average_pace, calories_burnt)
                    VALUES 
                      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
          $params = [
-              $_SESSION['user_id'], // might need to change to correct variable
+              $_SESSION['user_id'],
               $title,
               $activityType,
               $durationInSeconds,
               $activityDateTime,
-              $description,
-              $steps,
-              $totalDistance,
-              $averagePace,
-              $caloriesBurnt
+              $description ?: null,
+              is_numeric($steps)         ? (int)$steps         : null,
+              is_numeric($totalDistance) ? (float)$totalDistance: null,
+              is_numeric($averagePace)   ? (float)$averagePace  : null,
+              is_numeric($caloriesBurnt) ? (int)$caloriesBurnt  : null
          ];
 
          $result = pg_query_params($dbconn, $query, $params);
 
-         if ($result) {
-             header("Location: logs.php");
-             exit;
-         } else {
-             $error = "Error saving activity. Please try again.";
-         }
+         if (!$result) {
+            die("Insert failed: " . pg_last_error($dbconn));
+        } else {
+            header("Location: logs.php");
+            exit;
+        }
     }
 }
 ?>
@@ -87,25 +93,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/main2.css">
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark navbar-expand-md" aria-label="Main Navigation Bar">
-        <div class="container-xl">
-            <a class="navbar-brand" href="#" style="font-size:x-large">LOGO</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="ms-auto d-flex align-items-center">
-                    <button class="btn me-auto" type="button" style="color: white; font-size:larger"><u>Activity Feed</u></button>
-                    <a class="btn" href="newActivity.php" id="addButton" aria-label="Add new activity">
-                        <i class="fa-solid fa-circle-plus"></i>
-                    </a>
-                    <a class="btn" href="profile.php" id="profileButton" aria-label="User profile">
-                        <i class="fa-regular fa-circle-user"></i>
-                    </a>
-                </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="profile.php">Fitness Tracker</a>
+            <div>
+                <a class="btn btn-outline-light" href="goals.php">Goals</a>
+                <a class="btn btn-outline-light" href="profile.php">Profile</a>
+                <a class="btn btn-outline-light" href="logs.php">Logs</a>
+                <a class="btn btn-outline-light" href="logout.php">Logout</a>
             </div>
         </div>
     </nav>
@@ -115,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <form action="newActivity.php" method="POST">
+        <form id="newActivityForm" action="newActivity.php" method="POST">
             <!-- Title -->
             <div class="mb-3">
                 <label for="Title" class="form-label">Title</label>
@@ -188,6 +186,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
     </div>
     
+    <script>
+        (() => {
+        const form = document.getElementById('newActivityForm');
+        form.addEventListener('submit', e => {
+        const title = form.Title.value.trim();
+        if (title.length < 3) {
+      e.preventDefault();
+      alert('Title must be at least 3 characters long');
+      form.Title.focus();
+    }
+
+  });
+})();
+
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-mQ93r8dhb2uhT9LxeB1Mpr9ZmIdfuK4JbJ8bYvcj0Fow0PHeEq2zYkXf0Ehdc6Bf" 
             crossorigin="anonymous"></script>

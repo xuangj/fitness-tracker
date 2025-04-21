@@ -1,22 +1,26 @@
 <!-- Xuang Jin -->
 
 <?php
+session_start();
+
+//include 'config.php';
+
 
 class FitnessTrackerController{
     private $db;
     public function __construct($input){
-        /*$host = "localhost";
-        $port = "5432";
-        $dbname = "yyf2uf";
-        $user = "yyf2uf";
-        $password = "mQXFbLeZsW8Z";  */
-        $host = "db";
+        // for server
+        $host = "localhost";
+        $port = 5432;
+        $dbname = "pnq6th";
+        $user = "pnq6th";
+        $password = "sWYvrJqwKYgB";
+        /* $host = "db";
         $port = "5432";
         $dbname = "example";
         $user = "localuser";
-        $password = "cs4640LocalUser!";
+        $password = "cs4640LocalUser!"; */
 
-        session_start();
         $this->input = $input;
         $this->db = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
 
@@ -24,20 +28,19 @@ class FitnessTrackerController{
 
     public function run(){
         $command = "welcome";
-        if (isset($this->input["command"]) 
-            && ($this->input["command"] == "login" || isset($_SESSION["name"])))
-            $command = $this->input["command"];
+        if (isset($this->input["command"]) && 
+            ($this->input["command"] == "login" || 
+            $this->input["command"] == "createAccount" ||
+            isset($_SESSION["name"] ))) {
+
+                 $command = $this->input["command"];
+            }
+           
 
         switch($command){
             case "createAccount":
-                //$this->showCreateAccount();
-                //$this->createAccount();
-                //break;
-                if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                    $this->createAccount();
-                } else {
-                    $this->showCreateAccount();
-                }
+                $this->createAccount();
+                $this->showCreateAccount();
                 break;
             case "login":
                 $this->login();
@@ -67,43 +70,47 @@ class FitnessTrackerController{
 
     // Create Account logic
     public function showCreateAccount($message=""){
+        $_SESSION['create_account_message'] = $message;
+
         include(__DIR__ . '/createAccount.php'); 
     }
     
     // check if user exists by using their email
-    private function checkUserExist(){
-        $query = "SELECT * FROM users WHERE email = $1;";
-        $result = pg_query_params($this->db, $query, [$_POST["Email"]]);
+    private function checkUserExist($email){
+        $query = "SELECT * FROM ftUsers WHERE email = $1;";
+
+        $result = pg_query_params($this->db, $query, [$email]);
+        if ($result === false) {
+            error_log("Database error in checkUserExist: " . pg_last_error($this->db));
+            return false;
+        }
         return pg_num_rows($result) > 0;
     }
 
     // check if username is taken
-    private function checkUsernameTaken(){
-        $query = "SELECT * FROM users WHERE username = $1;";
-        $result = pg_query_params($this->db, $query, [$_POST["Username"]]);
+    private function checkUsernameTaken($username){
+        $query = "SELECT * FROM ftUsers WHERE username = $1;";
+        $result = pg_query_params($this->db, $query, [$username]);
+        if ($result === false) {
+            error_log("Database error in checkUsernameTaken: " . pg_last_error($this->db));
+            return false;
+        }
         return pg_num_rows($result) > 0;
     }
 
     public function createAccount($message =""){
-        // if fields are empty, send message
-        if (!isset($_POST["Name"]) || !isset($_POST["Email"]) 
-            || !isset($_POST["Password"]) ||  !isset($_POST["Username"])
-            || !isset($_POST["Gender"]) || !isset($_POST["Age"])
-            || !isset($_POST["Feet"]) || !isset($_POST["Inches"])
-            || !isset($_POST["Weight"]) || empty($_POST["Name"]) 
-            || empty($_POST["Username"]) || empty($_POST["Email"]) 
-            || empty($_POST["Password"]) || empty($_POST["Gender"]) 
-            || empty($_POST["Age"]) || empty($_POST["Feet"]) 
-            || empty($_POST["Inches"])|| empty($_POST["Weight"])){
-                $this->showCreateAccount("Please fill in all information.");
-                return;
-        }
+        $message = "";
+        $passwd = trim($_POST["Password"]);
 
-        // if age, height, weight, password are invalid values, show message
-        if(!is_numeric($_POST["Age"])){
-            $this->showCreateAccount("Please enter a valid age.");
-            return;
-        }
+        if (isset($_POST["Name"]) && isset($_POST["Email"]) 
+            && isset($_POST["Password"]) &&  isset($_POST["Username"])
+            && isset($_POST["Gender"]) && isset($_POST["Age"])
+            && isset($_POST["Feet"]) && isset($_POST["Inches"])
+            && isset($_POST["Weight"]) && !empty($_POST["Name"]) 
+            && !empty($_POST["Username"]) && !empty($_POST["Email"]) 
+            && !empty($_POST["Password"]) && !empty($_POST["Gender"]) 
+            && !empty($_POST["Age"]) && !empty($_POST["Feet"]) 
+            && !empty($_POST["Inches"]) && !empty($_POST["Weight"])){
 
         if(!is_numeric($_POST["Feet"]) || !is_numeric($_POST["Inches"])){
             $this->showCreateAccount("Please enter a valid height.");
@@ -117,7 +124,6 @@ class FitnessTrackerController{
         $passwd = trim($_POST["Password"]);
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
             $this->showCreateAccount("Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.");
-            return;
         }
 
         // check if username is unique and if account w/ email already exists
@@ -164,13 +170,14 @@ class FitnessTrackerController{
     }
 
 
+
     // Login logic
     public function showLogin($message=""){
         include(__DIR__ . '/login.php'); 
     }
 
     private function retrieveUser($email){
-        $query = "SELECT * FROM users WHERE email = $1;";
+        $query = "SELECT * FROM ftUsers WHERE email = $1;";
         $result = pg_query_params($this->db, $query, [$email]);
         return pg_fetch_assoc($result) ?: null;
     }
@@ -196,19 +203,25 @@ class FitnessTrackerController{
         }
         // check if password is identical to hash
         if(password_verify($password, $user["passwd"])){
+            $_SESSION["user_id"] = $user["userid"];
             $_SESSION["name"] = $user["name"];
             $_SESSION["email"] = $user["email"];
             $_SESSION["username"] = $user["username"];
+            $_SESSION["age"] = $user["age"];
+            $_SESSION["gender"] = $user["gender"];
+            $_SESSION["weight"] = $user["weight"];
+            $_SESSION["height"] = $user["height"];
         }
         else {
             $this-> showWelcome("<p class='alert alert-danger'>Incorrect password!</p>");
+            return;
         }
         header("Location: ?command=visitProfile");
         exit;
     }
     public function visitProfile($message = ""){
-        $query = "SELECT gender, age, height, weight FROM users WHERE email = $1";
-        $result = pg_query_params($this->db, $query, [$_SESSION["email"]]);
+        $query = "SELECT gender, age, height, weight FROM users WHERE name = $1";
+        $result = pg_query_params($this->db, $query, array($_SESSION["name"]));
         
         $user = pg_fetch_assoc($result);
 
@@ -220,7 +233,9 @@ class FitnessTrackerController{
         $inches = $heightInInches % 12;
         $feet = ($heightInInches - $inches) / 12;
 
+        echo "hit2";
         include(__DIR__ . '/profile.php');
+        echo "hit3";
     }
 
     public function showEditProfile($message = ""){
