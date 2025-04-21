@@ -1,3 +1,5 @@
+<!-- Xuang Jin -->
+
 <?php
 session_start();
 
@@ -110,58 +112,62 @@ class FitnessTrackerController{
             && !empty($_POST["Age"]) && !empty($_POST["Feet"]) 
             && !empty($_POST["Inches"]) && !empty($_POST["Weight"])){
 
-                if(!is_numeric($_POST["Feet"]) || !is_numeric($_POST["Inches"])){
-                    $message = "Please enter a valid height.";
-                    $this->showCreateAccount($message);
-                    return;
-                } 
-                if(!is_numeric($_POST["Weight"])){
-                    $message = "Please enter a valid weight.";
-                    $this->showCreateAccount($message);
-                    return;
-                } 
-                if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
-                    $message = "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.";
-                    $this->showCreateAccount($message);
-                    return;
-                }
-                if($this->checkUserExist($_POST["Email"]) === true){
-                    $message = "This email is linked to an existing account. Would you like to log in?";
-                    $this->showCreateAccount($message);
-                    return;
-                }
-                if($this->checkUsernameTaken($_POST["Username"]) === true){
-                    $message = "This username is already taken. Try something else!";
-                    $this->showCreateAccount($message);
-                    return;
-                } 
-                $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
-                $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
-                
-                $query = "INSERT INTO ftUsers (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING userid;";
-                $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
-                $result = pg_query_params($this->db, $query, $params);
-                if (! $result) {
-                    error_log("Create account failed: " . pg_last_error($this->db));
-                    $this->showCreateAccount("Database error. Please try again.");
-                    return;
-                }
+        if(!is_numeric($_POST["Feet"]) || !is_numeric($_POST["Inches"])){
+            $this->showCreateAccount("Please enter a valid height.");
+            return;
+        }
 
-                $row = pg_fetch_assoc($result);
-                $_SESSION["user_id"] = $row["userid"];
+        if(!is_numeric($_POST["Weight"])){
+            $this->showCreateAccount("Please enter a valid weight.");
+            return;
+        }
+        $passwd = trim($_POST["Password"]);
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $passwd)) {
+            $this->showCreateAccount("Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.");
+        }
 
-                $_SESSION["name"]     = $_POST["Name"];
-                $_SESSION["username"] = $_POST["Username"];
-                $_SESSION["email"] = $_POST["Email"];
-                $_SESSION["gender"] = $_POST["Gender"];
-                $_SESSION["age"] = $_POST["Age"];
-                $_SESSION["height"] = $heightInInches;
-                $_SESSION["weight"] = $_POST["Weight"];
-  
-                header("Location: ?command=visitProfile");
-                exit;
-            }
-}
+        // check if username is unique and if account w/ email already exists
+        if($this->checkUserExist() === true){
+            $this->showCreateAccount("This email is linked to an existing account. Would you like to log in?");
+            return;
+        }
+
+        if($this->checkUsernameTaken() === true){
+            $this->showCreateAccount("This username is already taken. Try something else!");
+            return;
+        }
+        $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
+
+
+        // convert height to inches for easy read
+        $heightInInches = ($_POST["Feet"] * 12) + $_POST["Inches"];
+
+        // hash password
+        $hashedPasswd = password_hash($_POST["Password"], PASSWORD_DEFAULT);
+        
+        // insert all info to table
+        $query = "INSERT INTO users (name, username, email, passwd, gender, age, height, weight) values ($1, $2, $3, $4, $5, $6, $7, $8);";
+        $params = [$_POST["Name"], $_POST["Username"], $_POST["Email"], $hashedPasswd,$_POST["Gender"] , $_POST["Age"], $heightInInches , $_POST["Weight"]];
+        $createUser = pg_query_params($this->db, $query, $params);
+        pg_last_error($this->db);
+
+        if (!$createUser) {
+            echo "Error: " . pg_last_error($this->db);
+        }
+        
+        // record values in session
+        $_SESSION["name"] = $_POST["Name"];
+        $_SESSION["username"] = $_POST["Username"];
+        $_SESSION["email"] = $_POST["Email"];
+        $_SESSION["gender"] = $_POST["Gender"];
+        $_SESSION["age"] = $_POST["Age"];
+        $_SESSION["height"] = $heightInInches;
+        $_SESSION["weight"] = $_POST["Weight"];
+
+        // Redirect to dashboard or activity page (you can define where to go)
+        header("Location: ?command=visitProfile");
+        return;
+    }
 
 
 
@@ -214,9 +220,8 @@ class FitnessTrackerController{
         exit;
     }
     public function visitProfile($message = ""){
-        echo "hit1";
-        $query = "SELECT gender, age, height, weight FROM ftUsers WHERE email = $1";
-        $result = pg_query_params($this->db, $query, [$_SESSION["email"]]);
+        $query = "SELECT gender, age, height, weight FROM users WHERE name = $1";
+        $result = pg_query_params($this->db, $query, array($_SESSION["name"]));
         
         $user = pg_fetch_assoc($result);
 
