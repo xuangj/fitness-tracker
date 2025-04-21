@@ -1,4 +1,3 @@
-// olivia chambers
 <?php
 session_start();
 
