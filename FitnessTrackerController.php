@@ -168,9 +168,7 @@ class FitnessTrackerController{
         header("Location: ?command=visitProfile");
         return;
     }
-
-
-
+}
     // Login logic
     public function showLogin($message=""){
         include(__DIR__ . '/login.php'); 
