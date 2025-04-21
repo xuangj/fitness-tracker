@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <form action="newActivity.php" method="POST">
+        <form id="newActivityForm" action="newActivity.php" method="POST">
             <!-- Title -->
             <div class="mb-3">
                 <label for="Title" class="form-label">Title</label>
@@ -186,6 +186,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
     </div>
     
+    <script>
+        (() => {
+        const form = document.getElementById('newActivityForm');
+        form.addEventListener('submit', e => {
+        const title = form.Title.value.trim();
+        if (title.length < 3) {
+      e.preventDefault();
+      alert('Title must be at least 3 characters long');
+      form.Title.focus();
+    }
+
+  });
+})();
+
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-mQ93r8dhb2uhT9LxeB1Mpr9ZmIdfuK4JbJ8bYvcj0Fow0PHeEq2zYkXf0Ehdc6Bf" 
             crossorigin="anonymous"></script>
