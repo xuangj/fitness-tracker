@@ -1,4 +1,4 @@
-<!--Xuang Jin and Olivia Chambers-->
+<!--Xuang Jin-->
 
 <?php
     //include 'config.php';
