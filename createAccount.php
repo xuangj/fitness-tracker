@@ -111,12 +111,8 @@ unset($_SESSION['create_account_message']);
                                 <button type="button" id="togglePassword">Show</button>
                             </div>
 
-<<<<<<< HEAD
-                            <p style="font-size:10pt">Passwords must be at least 8 characters long.</p>
-                            <div id="error-msg" style="color:red;"></div>
-=======
                             <p style="font-size:10pt">Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit.</p>
->>>>>>> branchB
+                            <div id="error-msg" style="color:red;"></div>
                         </div>
                     </div>
                 </div>
