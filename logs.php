@@ -160,6 +160,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
             </div>
           `);
         });
+        const cards = document.querySelectorAll('.card'); //Modifies the style and layout of the cards
+          cards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+          card.classList.add('border', 'border-primary');
+        });
+          card.addEventListener('mouseleave', () => {
+          card.classList.remove('border', 'border-primary');
+  });
+});
       })
       .fail((jqxhr, textStatus, error) => {
         console.error("AJAX load error:", textStatus, error);
